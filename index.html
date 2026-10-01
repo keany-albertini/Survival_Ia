@@ -29,9 +29,135 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 #eat{grid-column:1/3;width:62px;height:32px;border-radius:12px;justify-self:end}
 #logo{position:absolute;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);font-size:9px;font-weight:800;letter-spacing:1.5px;text-shadow:0 2px 5px #0007;opacity:.72}
 @media(max-width:520px){#logo{display:none}#stats{width:142px}#hint{max-width:58vw;overflow:hidden;text-overflow:ellipsis}}
+
+/* ===== MENU / CHARACTER CREATION ===== */
+body:not(.game-started) #hud,body:not(.game-started) #touch{opacity:0;pointer-events:none}
+body:not(.game-started) canvas{filter:blur(2px) brightness(.38) saturate(.75);transform:scale(1.03)}
+#frontEnd{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto;background:radial-gradient(circle at 50% 8%,rgba(214,184,111,.15),transparent 32%),linear-gradient(90deg,rgba(5,10,7,.86),rgba(5,12,8,.52),rgba(5,10,7,.86))}
+body.game-started #frontEnd{display:none}
+.menu-screen{display:none;width:min(1120px,100%);min-height:min(720px,94vh)}
+.menu-screen.active{display:flex}
+.menu-card{background:linear-gradient(145deg,rgba(15,23,17,.93),rgba(8,14,10,.86));border:1px solid rgba(224,196,126,.22);box-shadow:0 28px 90px #000a,inset 0 1px #ffffff0b;backdrop-filter:blur(15px);border-radius:22px}
+#screen-main{align-items:center}
+.main-box{width:min(440px,94vw);padding:28px}
+.menu-kicker{font-size:10px;letter-spacing:4px;color:#d7bd7b;text-transform:uppercase}
+.menu-title{font-family:Georgia,serif;font-size:clamp(48px,8vw,86px);line-height:.9;letter-spacing:5px;margin:7px 0 6px;text-shadow:0 10px 35px #000}
+.menu-sub{font-size:11px;letter-spacing:5px;color:#b9c3b5;margin-bottom:28px}
+.menu-btn,.small-btn,.race-btn{border:1px solid #ffffff18;background:#ffffff0b;color:#f3f1e8;border-radius:13px;padding:13px 15px;font-weight:800;cursor:pointer}
+.menu-btn{width:100%;text-align:left;margin:6px 0}
+.menu-btn.primary{background:linear-gradient(135deg,#8f7040,#c0a05e);color:#12160f;border-color:#d3b36b}
+.menu-btn:hover,.race-btn:hover{border-color:#d4b86e;background:#ffffff14}
+.menu-btn small{display:block;font-size:9px;font-weight:500;color:#adb7ab;margin-top:4px}
+.menu-btn.primary small{color:#303326}
+.screen-wrap{width:100%;padding:18px}
+.menu-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}
+.menu-top h2{font-family:Georgia,serif;font-size:clamp(30px,5vw,50px);margin:0}
+.menu-top p{margin:5px 0;color:#aeb7aa;font-size:11px}
+.small-btn{padding:9px 12px}
+.server-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.server-card{padding:16px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
+.server-card:hover{transform:translateY(-3px);border-color:#c8aa654d}
+.server-art{height:90px;border-radius:13px;border:1px solid #ffffff10;background:radial-gradient(circle at 70% 25%,#e2bd6b35,transparent 32%),linear-gradient(135deg,#38533b,#142019);display:flex;align-items:end;padding:10px}
+.server-card h3{margin:12px 0 4px}
+.server-meta{font-size:9px;color:#9fac9c}
+.char-link{font-size:10px;color:#d8bf7b;margin-top:11px;border-top:1px solid #ffffff0d;padding-top:9px}
+.create-layout{display:grid;grid-template-columns:minmax(280px,38%) 1fr;gap:15px}
+.preview-card,.form-card{padding:18px;min-height:520px}
+.preview-stage{height:100%;min-height:480px;border-radius:17px;background:radial-gradient(circle at 50% 34%,#d7b96c28,transparent 30%),linear-gradient(#2d4434,#111a15);position:relative;overflow:hidden;display:grid;place-items:center;border:1px solid #ffffff0d}
+.preview-stage:after{content:"";position:absolute;bottom:7%;left:16%;right:16%;height:10%;background:#0007;filter:blur(16px);border-radius:50%}
+.race-avatar{z-index:2;font-size:130px;line-height:1;filter:drop-shadow(0 20px 15px #0008);transform:translateY(-12px)}
+.preview-name{position:absolute;z-index:3;left:16px;right:16px;bottom:16px}
+.preview-name b{display:block;font-size:22px}.preview-name span{font-size:10px;color:#b9c2b7}
+.race-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:9px 0 16px}
+.race-btn{min-height:68px;padding:8px;font-size:10px}
+.race-btn.active{border-color:#d3b56c;background:#b996531d;box-shadow:inset 0 0 0 1px #d3b56c44}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field{display:grid;gap:6px}.field.full{grid-column:1/-1}
+.field label{font-size:9px;color:#aeb9ac;text-transform:uppercase;letter-spacing:1px}
+.field input,.field select{width:100%;border-radius:10px;border:1px solid #ffffff17;background:#09110dcc;color:#f0eee6;padding:11px}
+.swatches{display:flex;gap:7px;flex-wrap:wrap}
+.swatch{width:31px;height:31px;border-radius:50%;border:2px solid #ffffff24;cursor:pointer}
+.swatch.active{outline:2px solid #d6b76d;outline-offset:2px}
+.actions-row{display:flex;gap:9px;margin-top:17px}.actions-row .menu-btn{margin:0}
+.danger{background:#6c2e2e!important}
+.existing-box{padding:24px;width:min(740px,94vw);margin:auto}
+.existing-hero{display:grid;grid-template-columns:170px 1fr;gap:20px;align-items:center}
+.existing-avatar{height:190px;border-radius:18px;display:grid;place-items:center;font-size:90px;background:linear-gradient(#2a4232,#111914)}
+.statline{font-size:11px;color:#b5c0b3;margin:4px 0}
+@media(max-width:800px){.server-grid{grid-template-columns:1fr}.create-layout{grid-template-columns:1fr}.preview-card{min-height:360px}.preview-stage{min-height:330px}.race-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.existing-hero{grid-template-columns:1fr}.existing-avatar{height:150px}}
+
 </style>
 </head>
 <body>
+
+<div id="frontEnd">
+  <section id="screen-main" class="menu-screen active">
+    <div class="main-box menu-card">
+      <div class="menu-kicker">Survival Fantasy</div>
+      <h1 class="menu-title">EVERWILD</h1>
+      <div class="menu-sub">SURVIVAL</div>
+      <button class="menu-btn primary" id="playMenuBtn">JOUER<small>Choisir un serveur et ton personnage</small></button>
+      <button class="menu-btn" id="charactersBtn">PERSONNAGES<small>Voir les personnages liés à tes serveurs</small></button>
+      <button class="menu-btn" id="settingsBtn">PARAMÈTRES<small>Audio, affichage et commandes — à venir</small></button>
+      <div style="margin-top:18px;font-size:9px;color:#839083">Prototype GitHub • personnage lié au serveur</div>
+    </div>
+  </section>
+
+  <section id="screen-servers" class="menu-screen">
+    <div class="screen-wrap">
+      <div class="menu-top"><div><h2>Choisir un serveur</h2><p>Chaque serveur possède son propre personnage et sa propre progression.</p></div><button class="small-btn" data-back="main">RETOUR</button></div>
+      <div id="serverGrid" class="server-grid"></div>
+    </div>
+  </section>
+
+  <section id="screen-create" class="menu-screen">
+    <div class="screen-wrap">
+      <div class="menu-top"><div><h2>Créer ton personnage</h2><p id="createServerLabel"></p></div><button class="small-btn" data-back="servers">RETOUR</button></div>
+      <div class="create-layout">
+        <div class="preview-card menu-card">
+          <div class="preview-stage">
+            <div id="raceAvatar" class="race-avatar">🧑</div>
+            <div class="preview-name"><b id="previewName">Nouveau survivant</b><span id="previewRace">Humain • Homme</span></div>
+          </div>
+        </div>
+        <div class="form-card menu-card">
+          <div style="font-size:10px;color:#d7bd7b;letter-spacing:2px">1 • RACE</div>
+          <div id="raceGrid" class="race-grid"></div>
+          <div style="font-size:10px;color:#d7bd7b;letter-spacing:2px;margin-bottom:9px">2 • PERSONNALISATION</div>
+          <div class="form-grid">
+            <div class="field full"><label>Nom du personnage</label><input id="charName" maxlength="18" placeholder="Nom"></div>
+            <div class="field"><label>Sexe</label><select id="charSex"><option value="Homme">Homme</option><option value="Femme">Femme</option></select></div>
+            <div class="field"><label>Coiffure</label><select id="charHair"><option>Courts</option><option>Longs</option><option>Tressés</option><option>Crête</option><option>Rasés</option></select></div>
+            <div class="field full"><label>Couleur de peau</label><div id="skinSwatches" class="swatches"></div></div>
+            <div class="field full"><label>Couleur des yeux</label><div id="eyeSwatches" class="swatches"></div></div>
+            <div class="field full"><label>Couleur des cheveux</label><div id="hairSwatches" class="swatches"></div></div>
+          </div>
+          <div class="actions-row"><button id="createCharBtn" class="menu-btn primary">CRÉER LE PERSONNAGE</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-existing" class="menu-screen">
+    <div class="existing-box menu-card">
+      <div class="menu-top"><div><h2>Ton personnage</h2><p id="existingServer"></p></div><button class="small-btn" data-back="servers">RETOUR</button></div>
+      <div class="existing-hero">
+        <div id="existingAvatar" class="existing-avatar">🧑</div>
+        <div>
+          <h2 id="existingName" style="margin:0 0 8px"></h2>
+          <div id="existingRace" class="statline"></div>
+          <div class="statline">Niveau <b id="existingLevel">1</b> • XP <b id="existingXp">0</b></div>
+          <div class="statline">Ce personnage ne peut être utilisé que sur ce serveur.</div>
+          <div class="actions-row">
+            <button id="joinBtn" class="menu-btn primary">REJOINDRE LE SERVEUR</button>
+            <button id="deleteBtn" class="menu-btn danger">SUPPRIMER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <canvas id="c"></canvas>
 <div id="hud">
   <div id="logo">EVERWILD • SURVIVAL</div>
@@ -202,4 +328,105 @@ function draw(t){
 }
 requestAnimationFrame(update);
 </script>
+
+<script>
+(()=>{
+const FE = {
+  servers:[
+    {id:'serveur-1',name:'Serveur 1',mode:'PvE',pop:'Monde principal'},
+    {id:'serveur-2',name:'Serveur 2',mode:'PvP',pop:'Monde secondaire'},
+    {id:'serveur-3',name:'Serveur 3',mode:'PvE',pop:'Nouveau monde'}
+  ],
+  races:[
+    {id:'humain',name:'Humain',icon:'🧑'},
+    {id:'elfe',name:'Elfe',icon:'🧝'},
+    {id:'orc',name:'Orc',icon:'👹'},
+    {id:'nain',name:'Nain',icon:'🧔'},
+    {id:'draconien',name:'Draconien',icon:'🐲'},
+    {id:'neige',name:'Peuple de la Neige',icon:'❄️'},
+    {id:'arbre',name:'Peuple des Arbres',icon:'🌿'},
+    {id:'desert',name:'Peuple du Désert',icon:'🏜️'}
+  ],
+  selectedServer:null,selectedRace:'humain',
+  skin:'#d2a176',eyes:'#6ea8a6',hair:'#3a2b24'
+};
+const screens=['main','servers','create','existing'];
+const show=n=>screens.forEach(x=>document.getElementById('screen-'+x).classList.toggle('active',x===n));
+const key=id=>'everwild-character:'+id;
+const load=id=>{try{return JSON.parse(localStorage.getItem(key(id))||'null')}catch(e){return null}};
+const save=(id,c)=>localStorage.setItem(key(id),JSON.stringify(c));
+const del=id=>localStorage.removeItem(key(id));
+const race=id=>FE.races.find(r=>r.id===id)||FE.races[0];
+
+function renderServers(){
+ const g=document.getElementById('serverGrid');g.innerHTML='';
+ FE.servers.forEach(s=>{
+   const c=load(s.id);
+   const el=document.createElement('div');el.className='server-card menu-card';
+   el.innerHTML='<div><div class="server-art"><span style="font-size:9px;background:#07100bcc;padding:5px 8px;border-radius:99px">'+s.mode+'</span></div><h3>'+s.name+'</h3><div class="server-meta">'+s.pop+'</div></div><div class="char-link">'+(c?('Personnage : <b>'+c.name+'</b> • '+c.raceName):'Aucun personnage • créer un survivant')+'</div>';
+   el.onclick=()=>openServer(s);
+   g.appendChild(el);
+ });
+}
+function openServer(s){
+ FE.selectedServer=s;
+ const c=load(s.id);
+ if(c){renderExisting(c);show('existing')} else {document.getElementById('createServerLabel').textContent=s.name+' • '+s.mode+' — ce personnage restera lié à ce serveur.';show('create')}
+}
+function renderRaces(){
+ const g=document.getElementById('raceGrid');g.innerHTML='';
+ FE.races.forEach(r=>{
+   const b=document.createElement('button');b.className='race-btn'+(r.id===FE.selectedRace?' active':'');b.innerHTML='<div style="font-size:25px">'+r.icon+'</div>'+r.name;
+   b.onclick=()=>{FE.selectedRace=r.id;renderRaces();updatePreview()};g.appendChild(b);
+ });
+}
+function renderSwatches(id,vals,prop){
+ const g=document.getElementById(id);g.innerHTML='';
+ vals.forEach(v=>{const b=document.createElement('button');b.className='swatch'+(FE[prop]===v?' active':'');b.style.background=v;b.onclick=()=>{FE[prop]=v;renderSwatches(id,vals,prop)};g.appendChild(b)});
+}
+function updatePreview(){
+ const r=race(FE.selectedRace),sex=document.getElementById('charSex').value,n=document.getElementById('charName').value.trim();
+ document.getElementById('raceAvatar').textContent=r.icon;
+ document.getElementById('previewRace').textContent=r.name+' • '+sex;
+ document.getElementById('previewName').textContent=n||'Nouveau survivant';
+}
+function renderExisting(c){
+ const r=race(c.raceId);
+ document.getElementById('existingServer').textContent=FE.selectedServer.name+' • '+FE.selectedServer.mode;
+ document.getElementById('existingAvatar').textContent=r.icon;
+ document.getElementById('existingName').textContent=c.name;
+ document.getElementById('existingRace').textContent=c.raceName+' • '+c.sex+' • '+c.hair;
+ document.getElementById('existingLevel').textContent=c.level||1;
+ document.getElementById('existingXp').textContent=c.xp||0;
+}
+document.getElementById('playMenuBtn').onclick=()=>{renderServers();show('servers')};
+document.getElementById('charactersBtn').onclick=()=>{renderServers();show('servers')};
+document.getElementById('settingsBtn').onclick=()=>alert('Les paramètres seront ajoutés après le système de personnage.');
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>show(b.dataset.back));
+document.getElementById('charName').addEventListener('input',updatePreview);
+document.getElementById('charSex').addEventListener('change',updatePreview);
+document.getElementById('createCharBtn').onclick=()=>{
+ if(!FE.selectedServer)return;
+ const name=document.getElementById('charName').value.trim();if(!name){alert('Choisis un nom pour ton personnage.');return}
+ const r=race(FE.selectedRace);
+ const c={name,raceId:r.id,raceName:r.name,sex:document.getElementById('charSex').value,hair:document.getElementById('charHair').value,skin:FE.skin,eyes:FE.eyes,hairColor:FE.hair,level:1,xp:0,createdAt:Date.now()};
+ save(FE.selectedServer.id,c);renderExisting(c);show('existing');
+};
+document.getElementById('deleteBtn').onclick=()=>{
+ if(!FE.selectedServer)return;
+ if(confirm('Supprimer définitivement ce personnage ? Tu perdras toute sa progression, son niveau et son expérience sur ce serveur.')){
+   del(FE.selectedServer.id);document.getElementById('charName').value='';FE.selectedRace='humain';renderRaces();updatePreview();document.getElementById('createServerLabel').textContent=FE.selectedServer.name+' — nouveau personnage, progression à zéro.';show('create');
+ }
+};
+document.getElementById('joinBtn').onclick=()=>{
+ document.body.classList.add('game-started');
+};
+renderRaces();
+renderSwatches('skinSwatches',['#f0c7a5','#d9a679','#b97952','#8d5a3c','#5f3b2b','#b6cfe0','#91a77a'], 'skin');
+renderSwatches('eyeSwatches',['#5b7fa3','#62a08d','#78603f','#a5b960','#b3b6c7','#d28b58','#8d63aa'], 'eyes');
+renderSwatches('hairSwatches',['#211a18','#493124','#7b5436','#b88a52','#d3c6a2','#6d2e24','#c8c8c8'], 'hair');
+updatePreview();
+})();
+</script>
+
 </body></html>
