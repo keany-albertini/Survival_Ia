@@ -200,6 +200,68 @@ repeating-radial-gradient(circle at 30% 20%,#ffffff0d 0 4px,transparent 5px 13px
 .existing-avatar{font-family:Georgia,serif;font-size:42px;letter-spacing:2px;color:#e5d3a7;border:1px solid #ffffff12;background:radial-gradient(circle at 50% 32%,var(--existing-accent,#9e8051) 0,transparent 42%),linear-gradient(#2a4232,#111914)}
 @media(max-width:800px){.character-model{transform:translateY(-5px) scale(.88)}.preview-stage{min-height:400px}}
 
+
+/* ===== MEDIEVAL FANTASY THEME V3 ===== */
+:root{--parchment:#e8dcc0;--iron:#241f1a;--bronze:#a47c46;--bronze-hi:#d0ae70;--leather:#302419;--moss:#263429}
+#frontEnd{isolation:isolate}
+#frontEnd:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+radial-gradient(ellipse at 50% 115%,rgba(216,139,61,.20),transparent 34%),
+linear-gradient(180deg,rgba(1,5,3,.08),rgba(1,4,3,.70)),
+repeating-linear-gradient(92deg,transparent 0 95px,rgba(255,255,255,.008) 96px,transparent 98px)}
+#frontEnd:after{content:"";position:fixed;left:0;right:0;bottom:0;height:37%;z-index:-1;pointer-events:none;opacity:.60;background:
+radial-gradient(ellipse at 8% 100%,#0c160e 0 18%,transparent 19%),
+radial-gradient(ellipse at 22% 100%,#111c12 0 22%,transparent 23%),
+radial-gradient(ellipse at 78% 100%,#101b12 0 25%,transparent 26%),
+radial-gradient(ellipse at 96% 100%,#0a130d 0 20%,transparent 21%)}
+.menu-card{position:relative;border-radius:8px;border:1px solid #9f7c4b55;background:
+linear-gradient(145deg,rgba(29,25,20,.94),rgba(11,16,12,.95));
+box-shadow:0 32px 100px #000d,inset 0 0 0 1px #d7b97814,inset 0 0 45px #0007}
+.menu-card:before,.menu-card:after{content:"";position:absolute;width:18px;height:18px;pointer-events:none}
+.menu-card:before{left:7px;top:7px;border-left:1px solid #c39b5f77;border-top:1px solid #c39b5f77}
+.menu-card:after{right:7px;bottom:7px;border-right:1px solid #c39b5f77;border-bottom:1px solid #c39b5f77}
+.main-box{padding:34px 32px 30px}
+.menu-kicker{font-family:Georgia,serif;color:#baa77d;font-size:9px;letter-spacing:5px}
+.menu-title{position:relative;color:#ded0aa;font-family:Georgia,'Times New Roman',serif;font-weight:700;letter-spacing:7px;
+text-shadow:0 1px 0 #faf0c8,0 3px 0 #5b4931,0 8px 22px #000,0 0 36px #b98b4530}
+.menu-title:after{content:"";display:block;width:62%;height:1px;margin:14px auto 0;background:linear-gradient(90deg,transparent,#c49a5e,transparent)}
+.menu-sub{font-family:Georgia,serif;color:#8e9b8e;letter-spacing:7px;margin-top:12px}
+.menu-btn,.small-btn,.race-btn{border-radius:5px;font-family:Georgia,'Times New Roman',serif;letter-spacing:.8px}
+.menu-btn{position:relative;background:linear-gradient(180deg,#2e2a23dd,#171b16e8);border-color:#8e744e4f;padding:14px 17px}
+.menu-btn:before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(transparent,#a7834f88,transparent)}
+.menu-btn:hover{transform:translateX(2px);background:linear-gradient(180deg,#393229ee,#1a211aee);border-color:#c29b61aa}
+.menu-btn.primary{background:linear-gradient(180deg,#b18a50,#765a32);color:#17140f;border-color:#d5b16f;box-shadow:inset 0 1px #f2d79c80,0 7px 18px #0006}
+.menu-btn.primary:hover{background:linear-gradient(180deg,#c39a5b,#826339)}
+.menu-btn small{font-family:system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.2px}
+.menu-top h2,.existing-box h2{color:#e7dcc2;text-shadow:0 4px 16px #000;font-weight:500;letter-spacing:.5px}
+.menu-top p{color:#a99f8b}
+.small-btn{background:linear-gradient(#29251f,#171a16);border-color:#8e744e66;color:#d8c8a6}
+.server-card{border-radius:7px;background:linear-gradient(155deg,rgba(31,27,22,.94),rgba(11,17,13,.94))}
+.server-art{border-radius:4px;position:relative;overflow:hidden;background:
+linear-gradient(180deg,transparent 45%,#090d0acc),
+radial-gradient(circle at 74% 24%,#d5a45134,transparent 20%),
+linear-gradient(140deg,#48523e,#1a271d 58%,#0d1510)}
+.server-art:before{content:"";position:absolute;left:0;right:0;bottom:0;height:48%;opacity:.65;background:
+linear-gradient(150deg,transparent 0 22%,#111b12 23% 34%,transparent 35%),
+linear-gradient(30deg,transparent 0 55%,#182318 56% 70%,transparent 71%)}
+.server-card h3{font-family:Georgia,serif;color:#e5d5b2;font-weight:500}
+.char-link{color:#c5a56d;border-top-color:#8b704430}
+.form-card{background:
+linear-gradient(135deg,rgba(37,29,21,.91),rgba(13,18,14,.96)),
+repeating-linear-gradient(0deg,transparent 0 26px,#ffffff06 27px,transparent 28px)}
+.field label{font-family:Georgia,serif;color:#b6a481}
+.field input,.field select{border-radius:4px;background:linear-gradient(#151914,#0c100d);border-color:#8b704449;color:#e9dfca;box-shadow:inset 0 2px 8px #0008}
+.field input:focus,.field select:focus{outline:1px solid #b28d56;border-color:#b28d56}
+.swatch{border-radius:5px;transform:rotate(45deg);width:28px;height:28px;border-color:#c2a36b44}
+.swatch.active{outline:1px solid #d8b66f;outline-offset:3px}
+.preview-stage{border-radius:5px}
+.race-btn{border-radius:4px;background:linear-gradient(180deg,#25251f99,#111713aa);border-color:#826a454f}
+.race-mark{border-radius:3px;background:linear-gradient(#28231d,#111713);box-shadow:inset 0 0 8px #000}
+.actions-row .danger{background:linear-gradient(#693634,#3b201f)!important;border-color:#a95f59}
+#stats,#inv{border-radius:5px;background:linear-gradient(145deg,rgba(30,26,21,.78),rgba(10,15,11,.73));border-color:#8c74474b}
+.btn{border-radius:8px;background:linear-gradient(145deg,#2b2921d4,#141a14d4);border-color:#92774955}
+#eat{border-radius:6px}
+@media(max-width:800px){.main-box{padding:28px 22px}.menu-title{letter-spacing:4px}}
+
 </style>
 </head>
 <body>
@@ -207,9 +269,9 @@ repeating-radial-gradient(circle at 30% 20%,#ffffff0d 0 4px,transparent 5px 13px
 <div id="frontEnd">
   <section id="screen-main" class="menu-screen active">
     <div class="main-box menu-card">
-      <div class="menu-kicker">Survival Fantasy</div>
+      <div class="menu-kicker">MÉDIÉVAL • FANTASY • SURVIE</div>
       <h1 class="menu-title">EVERWILD</h1>
-      <div class="menu-sub">SURVIVAL</div>
+      <div class="menu-sub">UN MONDE SAUVAGE VOUS ATTEND</div>
       <button class="menu-btn primary" id="playMenuBtn">JOUER<small>Choisir un serveur et ton personnage</small></button>
       <button class="menu-btn" id="charactersBtn">PERSONNAGES<small>Voir les personnages liés à tes serveurs</small></button>
       <button class="menu-btn" id="settingsBtn">PARAMÈTRES<small>Audio, affichage et commandes — à venir</small></button>
