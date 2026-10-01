@@ -473,6 +473,295 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
   .ew-menu-button{min-height:58px;font-size:18px}
 }
 
+
+/* ===== MOBILE CHARACTER CREATOR V5 ===== */
+.live-preview-label{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  z-index:8;display:flex;align-items:center;gap:8px;
+  white-space:nowrap;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:9px;letter-spacing:2px;color:#d8bd7d;
+  text-shadow:0 2px 5px #000;
+}
+.live-preview-label span{display:block;width:28px;height:1px;background:linear-gradient(90deg,transparent,#b99758)}
+.live-preview-label span:last-child{background:linear-gradient(90deg,#b99758,transparent)}
+
+@media(max-width:800px){
+  #frontEnd{
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding:0;
+    overscroll-behavior:none;
+    background:
+      radial-gradient(circle at 50% 12%,rgba(171,121,56,.12),transparent 28%),
+      linear-gradient(180deg,#111711,#070c09 55%,#050806);
+  }
+
+  #screen-create{
+    width:100%!important;
+    min-height:100vh!important;
+    align-items:flex-start!important;
+  }
+
+  #screen-create .screen-wrap{
+    width:100%;
+    padding:0 12px 28px;
+  }
+
+  #screen-create .menu-top{
+    position:relative;
+    z-index:40;
+    margin:0 -12px;
+    padding:12px 14px 10px;
+    min-height:58px;
+    align-items:center;
+    background:linear-gradient(180deg,rgba(5,9,7,.98),rgba(5,9,7,.86));
+    border-bottom:1px solid #b4914f35;
+    backdrop-filter:blur(12px);
+  }
+
+  #screen-create .menu-top h2{
+    font-size:18px;
+    letter-spacing:.4px;
+  }
+
+  #screen-create .menu-top p{
+    display:none;
+  }
+
+  #screen-create .small-btn{
+    padding:8px 10px;
+    font-size:9px;
+    letter-spacing:1px;
+  }
+
+  #screen-create .create-layout{
+    display:block;
+  }
+
+  #screen-create .preview-card{
+    position:sticky;
+    top:0;
+    z-index:30;
+    width:100%;
+    min-height:0!important;
+    height:43vh;
+    max-height:390px;
+    min-height:315px!important;
+    margin:0 0 10px;
+    padding:7px;
+    border-left:0;
+    border-right:0;
+    background:rgba(7,12,9,.93);
+    backdrop-filter:blur(14px);
+    box-shadow:0 14px 30px rgba(0,0,0,.48);
+  }
+
+  #screen-create .preview-stage{
+    min-height:0!important;
+    height:100%;
+    border:1px solid #b7965538;
+    background:
+      linear-gradient(180deg,rgba(12,21,15,.15),rgba(4,8,6,.89)),
+      radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--raceAccent) 28%,transparent),transparent 37%),
+      linear-gradient(145deg,#26382c,#0b120e 72%);
+    overflow:hidden;
+  }
+
+  #screen-create .preview-stage:before{
+    background:
+      radial-gradient(circle at 50% 24%,rgba(255,218,142,.08),transparent 24%),
+      linear-gradient(90deg,transparent 49.7%,rgba(207,171,100,.12) 50%,transparent 50.3%),
+      linear-gradient(180deg,transparent 68%,rgba(0,0,0,.6));
+  }
+
+  #screen-create .preview-stage:after{
+    bottom:34px;
+    left:25%;
+    right:25%;
+    height:19px;
+    filter:blur(12px);
+  }
+
+  #screen-create .character-model{
+    transform:translateY(-1px) scale(.74);
+    transform-origin:center center;
+  }
+
+  #screen-create .race-nain{
+    transform:translateY(12px) scale(.69);
+  }
+
+  #screen-create .preview-name{
+    left:10px;
+    right:10px;
+    bottom:7px;
+    padding:8px 10px;
+    border-left:2px solid var(--raceAccent);
+    background:linear-gradient(90deg,rgba(4,8,6,.93),rgba(4,8,6,.26) 72%,transparent);
+  }
+
+  #screen-create .preview-name b{
+    font-size:18px;
+    line-height:1.05;
+  }
+
+  #screen-create .preview-name span{
+    font-size:8px;
+    margin-top:3px;
+    letter-spacing:1.3px;
+  }
+
+  #screen-create .race-lore{
+    display:none;
+  }
+
+  #screen-create .form-card{
+    min-height:0!important;
+    padding:13px 10px 18px;
+    margin:0;
+    border-left:0;
+    border-right:0;
+    box-shadow:none;
+    background:linear-gradient(180deg,rgba(6,11,8,.98),rgba(6,10,8,.94));
+  }
+
+  #screen-create .race-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:6px;
+    margin:8px 0 15px;
+  }
+
+  #screen-create .race-btn{
+    min-height:58px!important;
+    padding:7px 3px 6px!important;
+    text-align:center!important;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:9px!important;
+    letter-spacing:.25px;
+    border-color:#9b7b4330;
+    background:#080d0aaa;
+  }
+
+  #screen-create .race-btn:before{
+    left:0;right:0;top:auto;bottom:0;
+    width:auto;height:2px;
+    opacity:.72;
+  }
+
+  #screen-create .race-mark{
+    position:static!important;
+    transform:none!important;
+    width:28px;height:23px;
+    margin:0 auto 2px;
+    border-radius:2px;
+    font-size:8px;
+    background:linear-gradient(180deg,#151c16,#080c09);
+  }
+
+  #screen-create .race-btn small{
+    display:none!important;
+  }
+
+  #screen-create .race-btn.active{
+    transform:translateY(-1px);
+    box-shadow:0 0 14px color-mix(in srgb,var(--race-accent,#b99653) 22%,transparent),inset 0 0 14px #ffffff05;
+  }
+
+  #screen-create .form-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:10px 8px;
+  }
+
+  #screen-create .field.full{
+    grid-column:1/-1!important;
+  }
+
+  #screen-create .field label{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:9px;
+    letter-spacing:1.25px;
+    color:#baa97f;
+  }
+
+  #screen-create .field input,
+  #screen-create .field select{
+    min-height:47px;
+    padding:10px 12px;
+    font-size:15px;
+    border:1px solid #a8874b34;
+    background:linear-gradient(180deg,#0a0f0c,#050806);
+  }
+
+  #screen-create .swatches{
+    gap:7px;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    padding:3px 2px 5px;
+  }
+
+  #screen-create .swatch{
+    flex:0 0 31px;
+    width:31px;height:31px;
+    margin:2px;
+    border-radius:4px;
+    transform:rotate(45deg) scale(.84);
+    border:1px solid #e3c8882b;
+  }
+
+  #screen-create .swatch.active{
+    outline:2px solid #e2bd69;
+    outline-offset:3px;
+    box-shadow:0 0 13px #d69e3d55;
+  }
+
+  #screen-create .actions-row{
+    position:sticky;
+    bottom:0;
+    z-index:25;
+    margin:16px -2px -8px;
+    padding:9px 0 calc(9px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,transparent,#050806 28%);
+  }
+
+  #screen-create #createCharBtn{
+    min-height:54px;
+    text-align:center;
+    font-family:Georgia,"Times New Roman",serif;
+    letter-spacing:1.2px;
+    font-size:14px;
+    color:#fff0d0;
+    border:1px solid #e0ad4d;
+    background:linear-gradient(180deg,#71320f,#451b08);
+    box-shadow:0 0 15px #d8842638,inset 0 0 16px #f4a73317;
+  }
+}
+
+@media(max-width:390px){
+  #screen-create .preview-card{
+    height:39vh;
+    min-height:285px!important;
+  }
+  #screen-create .character-model{
+    transform:translateY(4px) scale(.67);
+  }
+  #screen-create .race-nain{
+    transform:translateY(13px) scale(.63);
+  }
+  #screen-create .race-btn{
+    min-height:54px!important;
+    font-size:8px!important;
+  }
+  #screen-create .swatch{
+    flex-basis:27px;width:27px;height:27px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -509,6 +798,7 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
       <div class="create-layout">
         <div class="preview-card menu-card">
           <div class="preview-stage">
+            <div class="live-preview-label"><span></span> APERÇU EN DIRECT <span></span></div>
             <div id="charModel" class="character-model race-humain">
   <div class="cm-arm l"></div><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
   <div class="cm-ear l"></div><div class="cm-ear r"></div><div class="cm-head"></div><div class="cm-hair"></div>
@@ -759,7 +1049,7 @@ const FE = {
   skin:'#d2a176',eyes:'#6ea8a6',hair:'#3a2b24'
 };
 const screens=['main','servers','create','existing'];
-const show=n=>screens.forEach(x=>document.getElementById('screen-'+x).classList.toggle('active',x===n));
+const show=n=>{screens.forEach(x=>document.getElementById('screen-'+x).classList.toggle('active',x===n));const fe=document.getElementById('frontEnd');if(fe)requestAnimationFrame(()=>fe.scrollTo({top:0,left:0,behavior:'auto'}));};
 const key=id=>'everwild-character:'+id;
 const load=id=>{try{return JSON.parse(localStorage.getItem(key(id))||'null')}catch(e){return null}};
 const save=(id,c)=>localStorage.setItem(key(id),JSON.stringify(c));
