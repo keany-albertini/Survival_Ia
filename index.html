@@ -262,21 +262,75 @@ repeating-linear-gradient(0deg,transparent 0 26px,#ffffff06 27px,transparent 28p
 #eat{border-radius:6px}
 @media(max-width:800px){.main-box{padding:28px 22px}.menu-title{letter-spacing:4px}}
 
+
+/* ===== CINEMATIC MEDIEVAL-FANTASY MENU V3 ===== */
+#frontEnd{padding:0;background:
+radial-gradient(circle at 73% 25%,rgba(240,180,92,.18),transparent 20%),
+linear-gradient(180deg,rgba(2,7,5,.15),rgba(2,7,5,.78)),
+linear-gradient(110deg,#06100b 0%,#102419 42%,#203222 68%,#0a110d 100%)}
+#frontEnd:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.62;background:
+linear-gradient(155deg,transparent 0 61%,#050a07 61.2% 67%,transparent 67.2%),
+linear-gradient(25deg,transparent 0 67%,#07110b 67.2% 72%,transparent 72.2%),
+radial-gradient(ellipse at 72% 90%,#152616 0 12%,transparent 12.5%),
+radial-gradient(ellipse at 55% 100%,#0c1b10 0 18%,transparent 18.5%)}
+#frontEnd:after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 170px #000,inset 0 -120px 120px #020503cc;background:repeating-linear-gradient(100deg,transparent 0 70px,rgba(255,255,255,.008) 71px,transparent 72px)}
+#screen-main{position:relative;min-height:100vh;width:100%;padding:clamp(24px,5vw,72px);align-items:center;justify-content:flex-start;overflow:hidden}
+#screen-main:before{content:"";position:absolute;right:-4vw;bottom:-10vh;width:min(62vw,820px);height:min(78vh,760px);opacity:.38;filter:drop-shadow(0 30px 35px #000);background:
+linear-gradient(90deg,transparent 44%,#070d09 44% 49%,transparent 49%),
+linear-gradient(90deg,transparent 54%,#070d09 54% 58%,transparent 58%),
+linear-gradient(180deg,transparent 0 47%,#070d09 47% 100%);
+clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 49%,54% 49%,57% 34%,61% 25%,65% 34%,68% 55%,76% 57%,82% 69%,88% 72%,92% 100%)}
+.main-box{position:relative;z-index:2;width:min(520px,92vw);padding:0;background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important}
+.menu-emblem{width:54px;height:54px;margin-bottom:18px;border:1px solid #d7b87566;transform:rotate(45deg);display:grid;place-items:center;background:#0a130dcc;box-shadow:0 0 40px #d79d4a22,inset 0 0 20px #d7b87512}
+.menu-emblem span{transform:rotate(-45deg);font-size:22px;color:#e0c181;text-shadow:0 0 15px #d79d4a88}
+.menu-kicker{font-family:Georgia,serif;font-size:10px;letter-spacing:3.3px;color:#c8b27f;text-shadow:0 2px 8px #000}
+.menu-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(58px,9vw,112px);font-weight:500;letter-spacing:6px;margin:6px 0 4px;line-height:.86;color:#f1ead9;text-shadow:0 4px 0 #2b2116,0 16px 35px #000,0 0 38px #d19b4920}
+.menu-sub{font-family:Georgia,serif;font-size:11px;letter-spacing:5px;color:#b8c4b2;margin:12px 0}
+.menu-rule{display:flex;align-items:center;gap:10px;width:min(410px,90%);margin:14px 0}.menu-rule span{height:1px;flex:1;background:linear-gradient(90deg,transparent,#bca46b88)}.menu-rule span:last-child{background:linear-gradient(90deg,#bca46b88,transparent)}.menu-rule i{font-style:normal;color:#c8ad70;font-size:9px}
+.menu-intro{max-width:430px;margin:0 0 24px;color:#aeb7ac;font-family:Georgia,serif;font-size:13px;line-height:1.65;text-shadow:0 2px 4px #000}
+.main-actions{width:min(380px,100%);display:grid;gap:7px}
+.main-actions .menu-btn{position:relative;padding:13px 15px 13px 20px;border-radius:2px;border:0;border-left:2px solid #826c45;background:linear-gradient(90deg,rgba(11,19,14,.9),rgba(8,13,10,.44));box-shadow:none;transition:.18s;overflow:hidden}
+.main-actions .menu-btn:after{content:"";position:absolute;inset:0;transform:translateX(-105%);background:linear-gradient(90deg,transparent,#d2b26b18,transparent);transition:.35s}
+.main-actions .menu-btn:hover:after{transform:translateX(105%)}.main-actions .menu-btn:hover{transform:translateX(5px);border-left-color:#e1bd6b;background:linear-gradient(90deg,rgba(34,39,27,.95),rgba(12,18,13,.5))}
+.main-actions .menu-btn.primary{color:#f6ecd5;border-left-color:#e0bb69;background:linear-gradient(90deg,rgba(102,78,38,.72),rgba(20,24,16,.55))}
+.main-actions .menu-btn b{font-family:Georgia,serif;letter-spacing:2px;font-size:13px;font-weight:500}.main-actions .menu-btn small{color:#94a094;margin-top:3px}.main-actions .menu-btn.primary small{color:#cfc7ad}
+.menu-foot{margin-top:22px;font-size:8px;letter-spacing:2px;color:#6f7c70}.menu-scene-copy{position:absolute;z-index:2;right:clamp(24px,5vw,70px);bottom:clamp(25px,6vh,70px);text-align:right;border-right:2px solid #a8874f;padding-right:14px;text-shadow:0 2px 8px #000}
+.menu-scene-copy span{display:block;font-size:9px;letter-spacing:4px;color:#c5a96e}.menu-scene-copy b{display:block;font-family:Georgia,serif;font-size:14px;font-weight:400;color:#cbd1c8;margin-top:5px}
+.menu-card{border-radius:4px;border:1px solid rgba(185,151,89,.28);background:linear-gradient(150deg,rgba(10,17,12,.94),rgba(7,12,9,.84));box-shadow:0 30px 80px #000a,inset 0 1px #e5ca8c0b}
+.small-btn,.race-btn,.server-art,.form-card,.preview-card,.preview-stage,.field input,.field select,.server-card,.existing-box{border-radius:3px}
+.swatch{border-radius:3px;transform:rotate(45deg);width:27px;height:27px;margin:4px}.swatch.active{outline-color:#d6b76d}
+.existing-box{width:min(900px,94vw)}.existing-hero{grid-template-columns:minmax(260px,40%) 1fr;gap:28px}
+.existing-stage{height:430px;position:relative;display:grid;place-items:center;overflow:hidden;border:1px solid #b99b5d33;background:linear-gradient(180deg,transparent 54%,#050907e8),radial-gradient(circle at 50% 28%,var(--existing-accent,#9d7f50) 0,transparent 38%),linear-gradient(145deg,#243a2a,#0c1510 70%);box-shadow:inset 0 0 75px #0008}
+.existing-stage:after{content:"";position:absolute;bottom:35px;left:18%;right:18%;height:28px;border-radius:50%;background:#000c;filter:blur(14px)}
+.existing-character-model{transform:translateY(14px) scale(1.03)}
+.character-model.hair-courts .cm-hair{height:38px;border-radius:52% 52% 22% 22%}
+.character-model.hair-longs .cm-hair{height:93px;border-radius:48% 48% 20% 20%;clip-path:polygon(0 0,100% 0,91% 100%,72% 80%,50% 100%,27% 80%,8% 100%)}
+.character-model.hair-tresses .cm-hair{height:58px}.character-model.hair-tresses .cm-hair:after{content:"";position:absolute;right:7px;top:27px;width:11px;height:93px;border-radius:7px;background:repeating-linear-gradient(180deg,var(--hair) 0 8px,color-mix(in srgb,var(--hair) 68%,#fff) 8px 12px)}
+.character-model.hair-crete .cm-hair{left:91px;width:34px;height:70px;top:5px;border-radius:50% 50% 8px 8px;clip-path:polygon(50% 0,100% 100%,0 100%)}.character-model.hair-rases .cm-hair{height:14px;top:42px;opacity:.72}
+.race-draconien .cm-hair,.race-bornak .cm-hair{display:none!important}
+@media(max-width:800px){#screen-main{padding:28px 22px;align-items:flex-end}.menu-title{font-size:60px}.menu-scene-copy{display:none}.menu-emblem{width:42px;height:42px}.main-box{padding-bottom:20px}.existing-hero{grid-template-columns:1fr}.existing-stage{height:360px}.existing-character-model{transform:translateY(8px) scale(.9)}}
+
 </style>
 </head>
 <body>
 
 <div id="frontEnd">
   <section id="screen-main" class="menu-screen active">
-    <div class="main-box menu-card">
-      <div class="menu-kicker">MÉDIÉVAL • FANTASY • SURVIE</div>
+    <div class="main-box">
+      <div class="menu-emblem"><span>✦</span></div>
+      <div class="menu-kicker">SURVIE • MONDE PERSISTANT • MÉDIÉVAL-FANTASY</div>
       <h1 class="menu-title">EVERWILD</h1>
-      <div class="menu-sub">UN MONDE SAUVAGE VOUS ATTEND</div>
-      <button class="menu-btn primary" id="playMenuBtn">JOUER<small>Choisir un serveur et ton personnage</small></button>
-      <button class="menu-btn" id="charactersBtn">PERSONNAGES<small>Voir les personnages liés à tes serveurs</small></button>
-      <button class="menu-btn" id="settingsBtn">PARAMÈTRES<small>Audio, affichage et commandes — à venir</small></button>
-      <div style="margin-top:18px;font-size:9px;color:#839083">Prototype GitHub • personnage lié au serveur</div>
+      <div class="menu-sub">LES TERRES SAUVAGES T’ATTENDENT</div>
+      <div class="menu-rule"><span></span><i>✦</i><span></span></div>
+      <p class="menu-intro">Choisis ton serveur, retrouve ton survivant et poursuis son histoire. Un personnage unique par serveur.</p>
+      <div class="main-actions">
+        <button class="menu-btn primary" id="playMenuBtn"><b>JOUER</b><small>Rejoindre un serveur</small></button>
+        <button class="menu-btn" id="charactersBtn"><b>PERSONNAGE</b><small>Consulter ton survivant</small></button>
+        <button class="menu-btn" id="settingsBtn"><b>PARAMÈTRES</b><small>Audio, affichage et commandes</small></button>
+      </div>
+      <div class="menu-foot">PROTOTYPE EVERWILD • VERSION SURVIE</div>
     </div>
+    <div class="menu-scene-copy"><span>VANTUMAN</span><b>Un monde ancien. Une seule vie à la fois.</b></div>
   </section>
 
   <section id="screen-servers" class="menu-screen">
@@ -324,7 +378,15 @@ repeating-linear-gradient(0deg,transparent 0 26px,#ffffff06 27px,transparent 28p
     <div class="existing-box menu-card">
       <div class="menu-top"><div><h2>Ton personnage</h2><p id="existingServer"></p></div><button class="small-btn" data-back="servers">RETOUR</button></div>
       <div class="existing-hero">
-        <div id="existingAvatar" class="existing-avatar">🧑</div>
+        <div id="existingStage" class="existing-stage">
+          <div id="existingModel" class="character-model race-humain existing-character-model">
+            <div class="cm-arm l"></div><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
+            <div class="cm-ear l"></div><div class="cm-ear r"></div><div class="cm-head"></div><div class="cm-hair"></div>
+            <div class="cm-eye l"></div><div class="cm-eye r"></div><div class="cm-brow l"></div><div class="cm-brow r"></div><div class="cm-nose"></div><div class="cm-mouth"></div>
+            <div class="cm-horn l"></div><div class="cm-horn r"></div><div class="cm-tusk l"></div><div class="cm-tusk r"></div><div class="cm-beard"></div><div class="cm-leaf"></div><div class="cm-scale"></div>
+            <div class="cm-shell l"></div><div class="cm-shell r"></div><div class="cm-spike l"></div><div class="cm-spike r"></div><div class="cm-mark"></div>
+          </div>
+        </div>
         <div>
           <h2 id="existingName" style="margin:0 0 8px"></h2>
           <div id="existingRace" class="statline"></div>
@@ -570,7 +632,8 @@ function renderSwatches(id,vals,prop){
 function updatePreview(){
  const r=race(FE.selectedRace),sex=document.getElementById('charSex').value,n=document.getElementById('charName').value.trim();
  const model=document.getElementById('charModel');
- model.className='character-model race-'+r.id;
+ const hairClass='hair-'+document.getElementById('charHair').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]/g,'');
+ model.className='character-model race-'+r.id+' '+hairClass;
  model.dataset.sex=sex;
  model.style.setProperty('--skin',FE.skin);
  model.style.setProperty('--eye',FE.eyes);
@@ -584,7 +647,12 @@ function updatePreview(){
 function renderExisting(c){
  const r=race(c.raceId);
  document.getElementById('existingServer').textContent=FE.selectedServer.name+' • '+FE.selectedServer.mode;
- const av=document.getElementById('existingAvatar');av.textContent=r.mark;av.style.setProperty('--existing-accent',r.accent);
+ const stage=document.getElementById('existingStage');stage.style.setProperty('--existing-accent',r.accent);
+ const em=document.getElementById('existingModel');
+ const hairClass='hair-'+String(c.hair||'Courts').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]/g,'');
+ em.className='character-model existing-character-model race-'+r.id+' '+hairClass;
+ em.dataset.sex=c.sex||'Homme';
+ em.style.setProperty('--skin',c.skin||r.skin);em.style.setProperty('--eye',c.eyes||r.eyes);em.style.setProperty('--hair',c.hairColor||r.hair);em.style.setProperty('--accent',r.accent);
  document.getElementById('existingName').textContent=c.name;
  document.getElementById('existingRace').textContent=c.raceName+' • '+c.sex+' • '+c.hair;
  document.getElementById('existingLevel').textContent=c.level||1;
@@ -596,6 +664,7 @@ document.getElementById('settingsBtn').onclick=()=>alert('Les paramètres seront
 document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>show(b.dataset.back));
 document.getElementById('charName').addEventListener('input',updatePreview);
 document.getElementById('charSex').addEventListener('change',updatePreview);
+document.getElementById('charHair').addEventListener('change',updatePreview);
 document.getElementById('createCharBtn').onclick=()=>{
  if(!FE.selectedServer)return;
  const name=document.getElementById('charName').value.trim();if(!name){alert('Choisis un nom pour ton personnage.');return}
