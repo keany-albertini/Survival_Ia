@@ -106,6 +106,100 @@ body.game-started #frontEnd{display:none}
 .race-arbre .cm-body{background:linear-gradient(90deg,#365a3b,#66805a)}.race-arbre .cm-leaf{display:block;top:22px;left:56px;width:50px;height:35px;background:#6d9856;clip-path:polygon(50% 0,63% 28%,95% 14%,76% 48%,100% 67%,65% 68%,50% 100%,36% 68%,0 67%,24% 48%,5% 14%,37% 28%)}
 .race-desert .cm-body{background:linear-gradient(90deg,#7b5e3b,#b18a52)}.race-desert .cm-hair{border-radius:50% 50% 18% 18%;height:46px}
 
+
+/* ===== EVERWILD VISUAL POLISH V2 ===== */
+#frontEnd{background:
+radial-gradient(circle at 72% 18%,rgba(206,167,92,.13),transparent 22%),
+radial-gradient(circle at 20% 76%,rgba(63,111,75,.18),transparent 32%),
+linear-gradient(115deg,rgba(4,9,6,.94),rgba(8,17,11,.68) 52%,rgba(3,7,5,.94))}
+.menu-card{border-color:rgba(224,196,126,.27);box-shadow:0 30px 100px #000c,inset 0 1px #ffffff10}
+.preview-card{padding:12px}
+.preview-stage{--raceAccent:#b59155;min-height:520px;background:
+linear-gradient(180deg,transparent 54%,rgba(4,8,6,.94)),
+radial-gradient(circle at 50% 31%,color-mix(in srgb,var(--raceAccent) 26%,transparent),transparent 34%),
+linear-gradient(145deg,#263b2d 0%,#101914 68%,#080d0a 100%);
+border-color:color-mix(in srgb,var(--raceAccent) 35%,transparent);box-shadow:inset 0 0 80px #0008}
+.preview-stage:before{content:"";position:absolute;inset:0;background:
+linear-gradient(105deg,transparent 0 38%,rgba(255,255,255,.035) 46%,transparent 55%),
+repeating-linear-gradient(90deg,transparent 0 42px,rgba(255,255,255,.012) 43px,transparent 44px);pointer-events:none}
+.preview-stage:after{bottom:10%;left:18%;right:18%;height:8%;background:#000b;filter:blur(19px)}
+.preview-name{padding:12px 13px;border-left:2px solid var(--raceAccent);background:linear-gradient(90deg,#07100dcc,transparent);bottom:13px}
+.preview-name b{font-family:Georgia,serif;font-size:25px;letter-spacing:.4px}
+.preview-name span{display:block;margin-top:3px;letter-spacing:1.2px;text-transform:uppercase;color:#d0d8cc}
+.race-lore{font-size:9px;color:#aeb9ac;margin-top:5px;max-width:92%;line-height:1.4;text-transform:none;letter-spacing:.3px}
+.race-btn{position:relative;overflow:hidden;text-align:left;min-height:74px;padding:10px 10px 10px 44px;transition:.18s}
+.race-btn:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--race-accent,#9c8050);opacity:.55}
+.race-btn.active{background:linear-gradient(120deg,color-mix(in srgb,var(--race-accent,#b99653) 22%,transparent),#ffffff08);border-color:var(--race-accent,#d3b56c)}
+.race-mark{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:26px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:Georgia,serif;font-size:10px;letter-spacing:-.5px;color:#eee3c8;border:1px solid color-mix(in srgb,var(--race-accent,#b99653) 45%,transparent);background:#050b08a8}
+.race-btn small{display:block;color:#919d91;font-size:8px;margin-top:4px;font-weight:500;line-height:1.2}
+.character-model{--skin:#d2a176;--eye:#6ea8a6;--hair:#3a2b24;--accent:#a47e49;position:relative;width:215px;height:355px;z-index:2;filter:drop-shadow(0 24px 20px #000c);transform:translateY(-25px)}
+.cm-body{position:absolute;left:47px;bottom:22px;width:121px;height:180px;border-radius:54px 54px 27px 27px;background:
+linear-gradient(110deg,transparent 0 44%,#ffffff10 50%,transparent 58%),
+linear-gradient(90deg,color-mix(in srgb,var(--accent) 62%,#263128),color-mix(in srgb,var(--accent) 35%,#4c5d4c));box-shadow:inset 0 0 0 1px #ffffff0c}
+.cm-neck{left:86px;top:119px;width:43px;height:48px;background:linear-gradient(90deg,color-mix(in srgb,var(--skin) 82%,#5b4032),var(--skin),color-mix(in srgb,var(--skin) 74%,#5b4032));border-radius:13px}
+.cm-head{left:66px;top:43px;width:84px;height:101px;border-radius:45% 45% 41% 41%;background:
+linear-gradient(108deg,#00000017 0 30%,transparent 48% 62%,#ffffff10 76%,transparent),
+var(--skin);border:1px solid #0004;box-shadow:inset 0 -12px 18px #00000012}
+.cm-hair{left:62px;top:31px;width:92px;height:45px;border-radius:52% 52% 33% 33%;background:linear-gradient(100deg,color-mix(in srgb,var(--hair) 73%,#000),var(--hair),color-mix(in srgb,var(--hair) 72%,#fff));box-shadow:inset 0 -8px 14px #0003}
+.cm-eye{top:86px;width:11px;height:6px;border-radius:70% 30%;background:var(--eye);box-shadow:0 0 7px color-mix(in srgb,var(--eye) 55%,transparent),inset 0 0 0 1px #ffffff55}
+.cm-eye.l{left:83px}.cm-eye.r{right:83px}
+.cm-brow{top:76px;width:18px;height:3px;background:color-mix(in srgb,var(--hair) 80%,#111)}.cm-brow.l{left:78px}.cm-brow.r{right:78px}
+.cm-nose{position:absolute;left:103px;top:89px;width:9px;height:21px;border-left:2px solid #0002;border-bottom:2px solid #0002;border-radius:0 0 0 8px}
+.cm-mouth{position:absolute;left:91px;top:119px;width:33px;height:8px;border-bottom:2px solid #4b29264f;border-radius:50%}
+.cm-arm{position:absolute;top:174px;width:42px;height:151px;border-radius:21px;background:linear-gradient(90deg,color-mix(in srgb,var(--skin) 78%,#4e362a),var(--skin))}
+.cm-arm.l{left:21px;transform:rotate(4deg)}.cm-arm.r{right:21px;transform:rotate(-4deg)}
+.cm-strap{position:absolute;left:58px;top:174px;width:100px;height:33px;border-radius:50%;border-top:10px solid color-mix(in srgb,var(--accent) 60%,#322417);transform:rotate(-4deg);opacity:.9}
+.cm-mark{position:absolute;left:94px;top:53px;width:27px;height:5px;border-radius:50%;background:var(--accent);opacity:.36}
+.cm-shell,.cm-spike{display:none;position:absolute}
+.cm-shell.l{left:33px}.cm-shell.r{right:33px}
+.cm-ear,.cm-horn,.cm-tusk,.cm-beard,.cm-leaf,.cm-scale{z-index:3}
+.character-model[data-sex="Femme"] .cm-body{left:54px;width:107px;border-radius:48px 48px 29px 29px}
+.character-model[data-sex="Femme"] .cm-arm.l{left:29px}.character-model[data-sex="Femme"] .cm-arm.r{right:29px}
+.character-model[data-sex="Femme"] .cm-head{left:69px;width:78px}
+.character-model[data-sex="Femme"] .cm-eye.l{left:84px}.character-model[data-sex="Femme"] .cm-eye.r{right:84px}
+/* Elfes */
+.race-elfe .cm-body{left:53px;width:109px;height:188px}.race-elfe .cm-head{height:106px}
+.race-elfe .cm-ear{display:block;top:80px;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.race-elfe .cm-ear.l{left:46px;border-right:24px solid var(--skin)}.race-elfe .cm-ear.r{right:46px;border-left:24px solid var(--skin)}
+.race-elfe .cm-mark{width:16px;height:16px;left:100px;top:58px;border:1px solid var(--accent);background:transparent;transform:rotate(45deg)}
+/* Orcs */
+.race-orc .cm-body{left:31px;width:153px;height:187px;border-radius:66px 66px 26px 26px}
+.race-orc .cm-head{left:60px;width:95px;border-radius:40%;box-shadow:inset 0 -16px 20px #0002}
+.race-orc .cm-arm{width:48px}.race-orc .cm-arm.l{left:10px}.race-orc .cm-arm.r{right:10px}
+.race-orc .cm-tusk{display:block;top:118px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:17px solid #e3d9b9}.race-orc .cm-tusk.l{left:76px}.race-orc .cm-tusk.r{right:76px}
+.race-orc .cm-mark{left:73px;top:62px;width:68px;height:3px;transform:rotate(-14deg);background:#3f271f}
+/* Nains */
+.race-nain{transform:translateY(-5px) scale(.92)}
+.race-nain .cm-body{left:27px;width:161px;height:150px;bottom:24px;border-radius:70px 70px 25px 25px}.race-nain .cm-head{top:75px}.race-nain .cm-neck{top:150px}.race-nain .cm-hair{top:63px}.race-nain .cm-eye{top:118px}.race-nain .cm-brow{top:108px}.race-nain .cm-nose{top:121px}.race-nain .cm-mouth{top:150px}
+.race-nain .cm-arm{top:204px;height:125px}.race-nain .cm-beard{display:block;left:70px;top:141px;width:75px;height:92px;border-radius:20px 20px 38px 38px;background:linear-gradient(90deg,color-mix(in srgb,var(--hair) 70%,#111),var(--hair),color-mix(in srgb,var(--hair) 65%,#bd7e4d));clip-path:polygon(0 0,100% 0,86% 76%,50% 100%,14% 76%)}
+/* Draconiens */
+.race-draconien .cm-hair{display:none}.race-draconien .cm-head{border-radius:38% 38% 47% 47%;background:
+repeating-radial-gradient(circle at 30% 25%,#ffffff10 0 3px,transparent 4px 11px),linear-gradient(120deg,color-mix(in srgb,var(--skin) 65%,#471d18),var(--skin))}
+.race-draconien .cm-body{background:
+repeating-radial-gradient(circle at 30% 20%,#ffffff0d 0 4px,transparent 5px 13px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 66%,#3d1d18),color-mix(in srgb,var(--accent) 44%,#713b2b))}
+.race-draconien .cm-horn{display:block;top:18px;width:17px;height:55px;background:linear-gradient(#e2d9bd,#8c795f);clip-path:polygon(50% 0,100% 100%,0 100%)}.race-draconien .cm-horn.l{left:67px;transform:rotate(-24deg)}.race-draconien .cm-horn.r{right:67px;transform:rotate(24deg)}
+.race-draconien .cm-scale{display:block;left:98px;top:48px;width:19px;height:72px;background:#f3d69725;clip-path:polygon(50% 0,100% 14%,55% 30%,100% 46%,55% 62%,100% 80%,50% 100%,0 80%,45% 62%,0 46%,45% 30%,0 14%)}
+/* Wildrens */
+.race-wildren .cm-head,.race-wildren .cm-arm{background:linear-gradient(100deg,#4d4435,var(--skin),#6d7550)}
+.race-wildren .cm-body{background:linear-gradient(90deg,#30472f,#5a6541);box-shadow:inset 0 0 0 1px #8c9a6244}
+.race-wildren .cm-hair{background:linear-gradient(#31412d,#5b724c);height:52px}
+.race-wildren .cm-horn{display:block;top:18px;width:9px;height:62px;background:#61523d;border-radius:7px}.race-wildren .cm-horn.l{left:66px;transform:rotate(-18deg)}.race-wildren .cm-horn.r{right:66px;transform:rotate(18deg)}
+.race-wildren .cm-leaf{display:block;top:24px;left:78px;width:60px;height:45px;background:#76935e;clip-path:polygon(50% 0,62% 29%,93% 11%,76% 47%,100% 66%,64% 68%,50% 100%,36% 68%,0 66%,24% 47%,7% 11%,38% 29%)}
+/* Wharns */
+.race-wharn .cm-head,.race-wharn .cm-arm{background:linear-gradient(100deg,#7fa8b4,var(--skin),#d2e0df)}
+.race-wharn .cm-body{background:linear-gradient(90deg,#5f7f88,#a8c0c4);box-shadow:inset 0 0 28px #d9f7ff22}
+.race-wharn .cm-hair{background:linear-gradient(110deg,#b6d1d8,#eef7f6,#a7c4cf);box-shadow:0 -5px 18px #aeefff55}
+.race-wharn .cm-mark{left:101px;top:55px;width:12px;height:36px;background:#bdf2ff55;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.race-wharn .cm-shell{display:block;top:170px;width:58px;height:33px;background:#e7f4f255;border-radius:50% 50% 18% 18%;box-shadow:0 0 14px #a9eaff44}
+/* Bornaks */
+.race-bornak .cm-hair{display:none}.race-bornak .cm-head{border-radius:42% 42% 35% 35%;background:linear-gradient(110deg,#5b3f2c,var(--skin),#a8794f);box-shadow:inset 0 0 0 3px #2b211a55}
+.race-bornak .cm-body{background:linear-gradient(90deg,#4f3626,#8a6040);box-shadow:inset 0 0 0 5px #b68b5d24}
+.race-bornak .cm-shell{display:block;top:164px;width:70px;height:55px;background:linear-gradient(135deg,#b07b4b,#60432f);clip-path:polygon(50% 0,100% 25%,82% 100%,18% 100%,0 25%);box-shadow:inset 0 0 0 2px #e0b57930}
+.race-bornak .cm-spike{display:block;top:55px;width:18px;height:52px;background:#7d583e;clip-path:polygon(50% 0,100% 100%,0 100%)}.race-bornak .cm-spike.l{left:55px;transform:rotate(-42deg)}.race-bornak .cm-spike.r{right:55px;transform:rotate(42deg)}
+.race-bornak .cm-mark{left:82px;top:74px;width:51px;height:21px;background:repeating-linear-gradient(90deg,#e0b47633 0 5px,transparent 5px 10px);border-radius:50%}
+.existing-avatar{font-family:Georgia,serif;font-size:42px;letter-spacing:2px;color:#e5d3a7;border:1px solid #ffffff12;background:radial-gradient(circle at 50% 32%,var(--existing-accent,#9e8051) 0,transparent 42%),linear-gradient(#2a4232,#111914)}
+@media(max-width:800px){.character-model{transform:translateY(-5px) scale(.88)}.preview-stage{min-height:400px}}
+
 </style>
 </head>
 <body>
@@ -137,12 +231,13 @@ body.game-started #frontEnd{display:none}
         <div class="preview-card menu-card">
           <div class="preview-stage">
             <div id="charModel" class="character-model race-humain">
-  <div class="cm-body"></div><div class="cm-neck"></div><div class="cm-ear l"></div><div class="cm-ear r"></div>
-  <div class="cm-head"></div><div class="cm-hair"></div><div class="cm-eye l"></div><div class="cm-eye r"></div>
-  <div class="cm-brow l"></div><div class="cm-brow r"></div><div class="cm-horn l"></div><div class="cm-horn r"></div>
-  <div class="cm-tusk l"></div><div class="cm-tusk r"></div><div class="cm-beard"></div><div class="cm-leaf"></div><div class="cm-scale"></div>
+  <div class="cm-arm l"></div><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
+  <div class="cm-ear l"></div><div class="cm-ear r"></div><div class="cm-head"></div><div class="cm-hair"></div>
+  <div class="cm-eye l"></div><div class="cm-eye r"></div><div class="cm-brow l"></div><div class="cm-brow r"></div><div class="cm-nose"></div><div class="cm-mouth"></div>
+  <div class="cm-horn l"></div><div class="cm-horn r"></div><div class="cm-tusk l"></div><div class="cm-tusk r"></div><div class="cm-beard"></div><div class="cm-leaf"></div><div class="cm-scale"></div>
+  <div class="cm-shell l"></div><div class="cm-shell r"></div><div class="cm-spike l"></div><div class="cm-spike r"></div><div class="cm-mark"></div>
 </div>
-            <div class="preview-name"><b id="previewName">Nouveau survivant</b><span id="previewRace">Humain • Homme</span></div>
+            <div class="preview-name"><b id="previewName">Nouveau survivant</b><span id="previewRace">Humain • Homme</span><div id="raceLore" class="race-lore">Équilibré et adaptable, prêt à survivre partout.</div></div>
           </div>
         </div>
         <div class="form-card menu-card">
@@ -332,10 +427,11 @@ function update(t){
   draw(t);requestAnimationFrame(update)
 }
 function draw(t){
-  const cam={x:clamp(player.x-W/2,0,Math.max(0,world.w-W)),y:clamp(player.y-H/2,0,Math.max(0,world.h-H))};
+  const zoom=1.28,viewW=W/zoom,viewH=H/zoom;
+  const cam={x:clamp(player.x-viewW/2,0,Math.max(0,world.w-viewW)),y:clamp(player.y-viewH*.58,0,Math.max(0,world.h-viewH))};
   const sky=ctx.createLinearGradient(0,0,W,H);sky.addColorStop(0,'#718764');sky.addColorStop(.52,'#607a55');sky.addColorStop(1,'#4d6748');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
   const sun=ctx.createRadialGradient(W*.2,H*.1,0,W*.2,H*.1,Math.max(W,H)*.9);sun.addColorStop(0,'#f6e8b012');sun.addColorStop(1,'#00000000');ctx.fillStyle=sun;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.translate(-cam.x,-cam.y);
+  ctx.save();ctx.scale(zoom,zoom);ctx.translate(-cam.x,-cam.y);
   for(const p of patches){ctx.fillStyle=p.t>.5?'#324d3030':'#a6ad7430';ctx.beginPath();ctx.ellipse(p.x,p.y,p.rx,p.ry,p.a,0,TAU);ctx.fill()}
   for(const g of grass){ctx.strokeStyle=g.s>1?'#314b2f48':'#d2ce8f24';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(g.x,g.y);ctx.lineTo(g.x+Math.cos(g.a)*g.s*4,g.y-3-g.s*2);ctx.stroke()}
   ctx.fillStyle='#3d7275';ctx.beginPath();ctx.ellipse(1650,420,245,142,-.18,0,TAU);ctx.fill();
@@ -363,14 +459,14 @@ const FE = {
     {id:'serveur-3',name:'Serveur 3',mode:'PvE',pop:'Nouveau monde'}
   ],
   races:[
-    {id:'humain',name:'Humain',icon:'🧑'},
-    {id:'elfe',name:'Elfe',icon:'🧝'},
-    {id:'orc',name:'Orc',icon:'👹'},
-    {id:'nain',name:'Nain',icon:'🧔'},
-    {id:'draconien',name:'Draconien',icon:'🐲'},
-    {id:'neige',name:'Peuple de la Neige',icon:'❄️'},
-    {id:'arbre',name:'Peuple des Arbres',icon:'🌿'},
-    {id:'desert',name:'Peuple du Désert',icon:'🏜️'}
+    {id:'humain',name:'Humain',mark:'HU',tag:'Équilibre',skin:'#d2a176',eyes:'#6ea8a6',hair:'#3a2b24',accent:'#a47e49',lore:'Polyvalent et adaptable, un survivant équilibré pour tous les environnements.'},
+    {id:'elfe',name:'Elfe',mark:'EL',tag:'Grâce',skin:'#e4c9b6',eyes:'#86ad8d',hair:'#d8caa7',accent:'#7f9a70',lore:'Silhouette élancée, traits fins et oreilles longues, profondément lié au vivant.'},
+    {id:'orc',name:'Orc',mark:'OR',tag:'Puissance',skin:'#74805b',eyes:'#d5a552',hair:'#29231d',accent:'#69794e',lore:'Massif, puissant et marqué par les combats, avec défenses et carrure imposante.'},
+    {id:'nain',name:'Nain',mark:'NA',tag:'Résilience',skin:'#c8946f',eyes:'#738b91',hair:'#8a4b32',accent:'#91653d',lore:'Trapus et robustes, les Nains portent barbes, tresses et marques de leur clan.'},
+    {id:'draconien',name:'Draconien',mark:'DR',tag:'Héritage du feu',skin:'#a34d37',eyes:'#efbd55',hair:'#3b201d',accent:'#c66a3c',lore:'Humanoïde reptilien aux écailles chaudes, crêtes et cornes héritées des anciens.'},
+    {id:'wildren',name:'Wildren',mark:'WI',tag:'Lien vital',skin:'#76684f',eyes:'#9dbb67',hair:'#4b3e2c',accent:'#66834e',lore:'Peuple végétal aux textures d’écorce, feuillage et branches naturelles.'},
+    {id:'wharn',name:'Wharn',mark:'WH',tag:'Souffle de glace',skin:'#a9c7d0',eyes:'#83d5eb',hair:'#e1ecef',accent:'#72adbf',lore:'Peuple du froid à la peau glacée, cheveux clairs et marques bleutées.'},
+    {id:'bornak',name:'Bornak',mark:'BO',tag:'Carapace',skin:'#8d6244',eyes:'#e3b564',hair:'#3b2e26',accent:'#a8784a',lore:'Race cuirassée à la carapace naturelle, plaques épaisses et pointes défensives.'}
   ],
   selectedServer:null,selectedRace:'humain',
   skin:'#d2a176',eyes:'#6ea8a6',hair:'#3a2b24'
@@ -381,7 +477,7 @@ const key=id=>'everwild-character:'+id;
 const load=id=>{try{return JSON.parse(localStorage.getItem(key(id))||'null')}catch(e){return null}};
 const save=(id,c)=>localStorage.setItem(key(id),JSON.stringify(c));
 const del=id=>localStorage.removeItem(key(id));
-const race=id=>FE.races.find(r=>r.id===id)||FE.races[0];
+const race=id=>{const aliases={neige:'wharn',arbre:'wildren',desert:'bornak'};return FE.races.find(r=>r.id===(aliases[id]||id))||FE.races[0]};
 
 function renderServers(){
  const g=document.getElementById('serverGrid');g.innerHTML='';
@@ -401,8 +497,8 @@ function openServer(s){
 function renderRaces(){
  const g=document.getElementById('raceGrid');g.innerHTML='';
  FE.races.forEach(r=>{
-   const b=document.createElement('button');b.className='race-btn'+(r.id===FE.selectedRace?' active':'');b.innerHTML='<div style="font-size:25px">'+r.icon+'</div>'+r.name;
-   b.onclick=()=>{FE.selectedRace=r.id;renderRaces();updatePreview()};g.appendChild(b);
+   const b=document.createElement('button');b.className='race-btn'+(r.id===FE.selectedRace?' active':'');b.style.setProperty('--race-accent',r.accent);b.innerHTML='<span class="race-mark">'+r.mark+'</span>'+r.name+'<small>'+r.tag+'</small>';
+   b.onclick=()=>{FE.selectedRace=r.id;FE.skin=r.skin;FE.eyes=r.eyes;FE.hair=r.hair;renderRaces();updatePreview()};g.appendChild(b);
  });
 }
 function renderSwatches(id,vals,prop){
@@ -413,16 +509,20 @@ function updatePreview(){
  const r=race(FE.selectedRace),sex=document.getElementById('charSex').value,n=document.getElementById('charName').value.trim();
  const model=document.getElementById('charModel');
  model.className='character-model race-'+r.id;
+ model.dataset.sex=sex;
  model.style.setProperty('--skin',FE.skin);
  model.style.setProperty('--eye',FE.eyes);
  model.style.setProperty('--hair',FE.hair);
+ model.style.setProperty('--accent',r.accent);
+ document.querySelector('.preview-stage').style.setProperty('--raceAccent',r.accent);
  document.getElementById('previewRace').textContent=r.name+' • '+sex;
+ document.getElementById('raceLore').textContent=r.lore;
  document.getElementById('previewName').textContent=n||'Nouveau survivant';
 }
 function renderExisting(c){
  const r=race(c.raceId);
  document.getElementById('existingServer').textContent=FE.selectedServer.name+' • '+FE.selectedServer.mode;
- document.getElementById('existingAvatar').textContent=r.icon;
+ const av=document.getElementById('existingAvatar');av.textContent=r.mark;av.style.setProperty('--existing-accent',r.accent);
  document.getElementById('existingName').textContent=c.name;
  document.getElementById('existingRace').textContent=c.raceName+' • '+c.sex+' • '+c.hair;
  document.getElementById('existingLevel').textContent=c.level||1;
