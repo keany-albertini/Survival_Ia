@@ -86,6 +86,26 @@ body.game-started #frontEnd{display:none}
 .statline{font-size:11px;color:#b5c0b3;margin:4px 0}
 @media(max-width:800px){.server-grid{grid-template-columns:1fr}.create-layout{grid-template-columns:1fr}.preview-card{min-height:360px}.preview-stage{min-height:330px}.race-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.existing-hero{grid-template-columns:1fr}.existing-avatar{height:150px}}
 
+
+/* Character preview model */
+.character-model{--skin:#d2a176;--eye:#6ea8a6;--hair:#3a2b24;position:relative;width:160px;height:285px;z-index:2;filter:drop-shadow(0 18px 16px #0008)}
+.cm-body{position:absolute;left:34px;bottom:18px;width:92px;height:145px;border-radius:44px 44px 25px 25px;background:linear-gradient(90deg,#344f45,#557267)}
+.cm-neck{position:absolute;left:65px;top:105px;width:30px;height:40px;background:var(--skin);border-radius:12px}
+.cm-head{position:absolute;left:47px;top:40px;width:66px;height:82px;border-radius:47% 47% 43% 43%;background:var(--skin);border:1px solid #0002}
+.cm-hair{position:absolute;left:45px;top:31px;width:70px;height:36px;border-radius:50% 50% 35% 35%;background:var(--hair)}
+.cm-eye{position:absolute;top:77px;width:8px;height:5px;border-radius:50%;background:var(--eye);box-shadow:0 0 5px color-mix(in srgb,var(--eye) 65%,white)}
+.cm-eye.l{left:62px}.cm-eye.r{right:62px}
+.cm-brow{position:absolute;top:69px;width:14px;height:3px;border-radius:3px;background:var(--hair)}.cm-brow.l{left:58px;transform:rotate(6deg)}.cm-brow.r{right:58px;transform:rotate(-6deg)}
+.cm-ear,.cm-horn,.cm-tusk,.cm-beard,.cm-leaf,.cm-scale{display:none;position:absolute}
+.race-elfe .cm-ear{display:block;top:70px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent}
+.race-elfe .cm-ear.l{left:35px;border-right:20px solid var(--skin)}.race-elfe .cm-ear.r{right:35px;border-left:20px solid var(--skin)}
+.race-orc .cm-head{width:74px;left:43px;border-radius:43%}.race-orc .cm-tusk{display:block;top:103px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:14px solid #e8dfc3}.race-orc .cm-tusk.l{left:59px}.race-orc .cm-tusk.r{right:59px}
+.race-nain .character-model{}.race-nain .cm-body{height:120px;bottom:20px;width:104px;left:28px}.race-nain .cm-head{top:58px}.race-nain .cm-hair{top:49px}.race-nain .cm-eye{top:95px}.race-nain .cm-brow{top:87px}.race-nain .cm-beard{display:block;left:53px;top:108px;width:54px;height:70px;border-radius:18px 18px 32px 32px;background:var(--hair)}
+.race-draconien .cm-head{border-radius:42%;box-shadow:inset 0 0 0 3px #ffffff0e}.race-draconien .cm-horn{display:block;top:26px;width:12px;height:38px;background:#d8cfb3;clip-path:polygon(50% 0,100% 100%,0 100%)}.race-draconien .cm-horn.l{left:48px;transform:rotate(-22deg)}.race-draconien .cm-horn.r{right:48px;transform:rotate(22deg)}.race-draconien .cm-scale{display:block;left:72px;top:50px;width:16px;height:52px;background:#ffffff18;clip-path:polygon(50% 0,100% 18%,55% 35%,100% 55%,55% 70%,100% 90%,50% 100%,0 90%,45% 70%,0 55%,45% 35%,0 18%)}
+.race-neige .cm-body{background:linear-gradient(90deg,#7e9c9d,#b7ced0)}.race-neige .cm-hair{box-shadow:0 -3px 9px #d7efff55}
+.race-arbre .cm-body{background:linear-gradient(90deg,#365a3b,#66805a)}.race-arbre .cm-leaf{display:block;top:22px;left:56px;width:50px;height:35px;background:#6d9856;clip-path:polygon(50% 0,63% 28%,95% 14%,76% 48%,100% 67%,65% 68%,50% 100%,36% 68%,0 67%,24% 48%,5% 14%,37% 28%)}
+.race-desert .cm-body{background:linear-gradient(90deg,#7b5e3b,#b18a52)}.race-desert .cm-hair{border-radius:50% 50% 18% 18%;height:46px}
+
 </style>
 </head>
 <body>
@@ -116,7 +136,12 @@ body.game-started #frontEnd{display:none}
       <div class="create-layout">
         <div class="preview-card menu-card">
           <div class="preview-stage">
-            <div id="raceAvatar" class="race-avatar">🧑</div>
+            <div id="charModel" class="character-model race-humain">
+  <div class="cm-body"></div><div class="cm-neck"></div><div class="cm-ear l"></div><div class="cm-ear r"></div>
+  <div class="cm-head"></div><div class="cm-hair"></div><div class="cm-eye l"></div><div class="cm-eye r"></div>
+  <div class="cm-brow l"></div><div class="cm-brow r"></div><div class="cm-horn l"></div><div class="cm-horn r"></div>
+  <div class="cm-tusk l"></div><div class="cm-tusk r"></div><div class="cm-beard"></div><div class="cm-leaf"></div><div class="cm-scale"></div>
+</div>
             <div class="preview-name"><b id="previewName">Nouveau survivant</b><span id="previewRace">Humain • Homme</span></div>
           </div>
         </div>
@@ -382,11 +407,15 @@ function renderRaces(){
 }
 function renderSwatches(id,vals,prop){
  const g=document.getElementById(id);g.innerHTML='';
- vals.forEach(v=>{const b=document.createElement('button');b.className='swatch'+(FE[prop]===v?' active':'');b.style.background=v;b.onclick=()=>{FE[prop]=v;renderSwatches(id,vals,prop)};g.appendChild(b)});
+ vals.forEach(v=>{const b=document.createElement('button');b.className='swatch'+(FE[prop]===v?' active':'');b.style.background=v;b.onclick=()=>{FE[prop]=v;renderSwatches(id,vals,prop);updatePreview()};g.appendChild(b)});
 }
 function updatePreview(){
  const r=race(FE.selectedRace),sex=document.getElementById('charSex').value,n=document.getElementById('charName').value.trim();
- document.getElementById('raceAvatar').textContent=r.icon;
+ const model=document.getElementById('charModel');
+ model.className='character-model race-'+r.id;
+ model.style.setProperty('--skin',FE.skin);
+ model.style.setProperty('--eye',FE.eyes);
+ model.style.setProperty('--hair',FE.hair);
  document.getElementById('previewRace').textContent=r.name+' • '+sex;
  document.getElementById('previewName').textContent=n||'Nouveau survivant';
 }
