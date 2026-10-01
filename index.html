@@ -762,6 +762,34 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
   }
 }
 
+
+/* ===== RACE PORTRAIT CANVAS V6 ===== */
+.char-preview-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:2;
+  display:block;
+  pointer-events:none;
+}
+.existing-preview-canvas{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+.preview-stage,.existing-stage{isolation:isolate}
+.preview-stage .preview-name{z-index:7}
+.preview-stage .live-preview-label{z-index:8}
+.existing-stage:before{
+  content:"";
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.4));
+}
+@media(max-width:800px){
+  #screen-create .char-preview-canvas{width:100%;height:100%}
+  #screen-create .preview-card{height:46vh;min-height:330px!important;max-height:420px}
+  #screen-create .preview-stage{height:100%}
+  #screen-create .race-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #screen-create .race-btn{min-height:60px!important}
+}
+
 </style>
 </head>
 <body>
@@ -799,8 +827,7 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
         <div class="preview-card menu-card">
           <div class="preview-stage">
             <div class="live-preview-label"><span></span> APERÇU EN DIRECT <span></span></div>
-            <div id="charModel" class="character-model race-humain">
-  <div class="cm-arm l"></div><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
+            <canvas id="charPreviewCanvas" class="char-preview-canvas" width="420" height="520" aria-label="Aperçu du personnage"></canvas><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
   <div class="cm-ear l"></div><div class="cm-ear r"></div><div class="cm-head"></div><div class="cm-hair"></div>
   <div class="cm-eye l"></div><div class="cm-eye r"></div><div class="cm-brow l"></div><div class="cm-brow r"></div><div class="cm-nose"></div><div class="cm-mouth"></div>
   <div class="cm-horn l"></div><div class="cm-horn r"></div><div class="cm-tusk l"></div><div class="cm-tusk r"></div><div class="cm-beard"></div><div class="cm-leaf"></div><div class="cm-scale"></div>
@@ -832,8 +859,7 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
       <div class="menu-top"><div><h2>Ton personnage</h2><p id="existingServer"></p></div><button class="small-btn" data-back="servers">RETOUR</button></div>
       <div class="existing-hero">
         <div id="existingStage" class="existing-stage">
-          <div id="existingModel" class="character-model race-humain existing-character-model">
-            <div class="cm-arm l"></div><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
+          <canvas id="existingPreviewCanvas" class="char-preview-canvas existing-preview-canvas" width="420" height="520" aria-label="Personnage du serveur"></canvas><div class="cm-arm r"></div><div class="cm-body"></div><div class="cm-strap"></div><div class="cm-neck"></div>
             <div class="cm-ear l"></div><div class="cm-ear r"></div><div class="cm-head"></div><div class="cm-hair"></div>
             <div class="cm-eye l"></div><div class="cm-eye r"></div><div class="cm-brow l"></div><div class="cm-brow r"></div><div class="cm-nose"></div><div class="cm-mouth"></div>
             <div class="cm-horn l"></div><div class="cm-horn r"></div><div class="cm-tusk l"></div><div class="cm-tusk r"></div><div class="cm-beard"></div><div class="cm-leaf"></div><div class="cm-scale"></div>
@@ -1075,23 +1101,294 @@ function renderRaces(){
  const g=document.getElementById('raceGrid');g.innerHTML='';
  FE.races.forEach(r=>{
    const b=document.createElement('button');b.className='race-btn'+(r.id===FE.selectedRace?' active':'');b.style.setProperty('--race-accent',r.accent);b.innerHTML='<span class="race-mark">'+r.mark+'</span>'+r.name+'<small>'+r.tag+'</small>';
-   b.onclick=()=>{FE.selectedRace=r.id;FE.skin=r.skin;FE.eyes=r.eyes;FE.hair=r.hair;renderRaces();updatePreview()};g.appendChild(b);
+   b.onclick=()=>{FE.selectedRace=r.id;FE.skin=r.skin;FE.eyes=r.eyes;FE.hair=r.hair;renderRaces();renderSwatches('skinSwatches',['#f0c7a5','#d9a679','#b97952','#8d5a3c','#5f3b2b','#b6cfe0','#91a77a'],'skin');renderSwatches('eyeSwatches',['#5b7fa3','#62a08d','#78603f','#a5b960','#b3b6c7','#d28b58','#8d63aa'],'eyes');renderSwatches('hairSwatches',['#211a18','#493124','#7b5436','#b88a52','#d3c6a2','#6d2e24','#c8c8c8'],'hair');updatePreview()};g.appendChild(b);
  });
 }
 function renderSwatches(id,vals,prop){
  const g=document.getElementById(id);g.innerHTML='';
  vals.forEach(v=>{const b=document.createElement('button');b.className='swatch'+(FE[prop]===v?' active':'');b.style.background=v;b.onclick=()=>{FE[prop]=v;renderSwatches(id,vals,prop);updatePreview()};g.appendChild(b)});
 }
+
+const previewState={creator:null,existing:null,last:0};
+
+function pHex(hex){
+ const h=String(hex||'#888888').replace('#','');
+ const v=h.length===3?h.split('').map(x=>x+x).join(''):h.padEnd(6,'8').slice(0,6);
+ return [parseInt(v.slice(0,2),16)||128,parseInt(v.slice(2,4),16)||128,parseInt(v.slice(4,6),16)||128];
+}
+function pColor(rgb,a=1){return 'rgba('+Math.round(rgb[0])+','+Math.round(rgb[1])+','+Math.round(rgb[2])+','+a+')'}
+function pMix(a,b,t){
+ const A=pHex(a),B=pHex(b);
+ return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');
+}
+function pRound(ctx,x,y,w,h,r){
+ const rr=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+}
+function pGrad(ctx,x1,y1,x2,y2,c1,c2,c3){
+ const g=ctx.createLinearGradient(x1,y1,x2,y2);g.addColorStop(0,c1);g.addColorStop(.55,c2);g.addColorStop(1,c3||c2);return g;
+}
+function pEllipse(ctx,x,y,rx,ry,fill,stroke=null,lw=1){
+ ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();
+ if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke()}
+}
+function drawPreviewHair(ctx,cx,headTop,hw,hh,hair,style,race){
+ if(['draconien','bornak'].includes(race))return;
+ const dark=pMix(hair,'#050505',.42),light=pMix(hair,'#ffffff',.16);
+ ctx.save();
+ if(race==='wildren'){hair=pMix(hair,'#4d6a3f',.55)}
+ if(race==='wharn'){hair=pMix(hair,'#eaf7fa',.65)}
+ const g=pGrad(ctx,cx-hw/2,headTop,cx+hw/2,headTop+hh,hair,light,dark);
+ ctx.fillStyle=g;
+ if(style==='Rasés'){
+   ctx.beginPath();ctx.ellipse(cx,headTop+16,hw*.47,hh*.20,0,Math.PI,Math.PI*2);ctx.fill();
+ }else if(style==='Crête'){
+   ctx.beginPath();ctx.moveTo(cx-hw*.13,headTop+14);ctx.lineTo(cx,headTop-24);ctx.lineTo(cx+hw*.14,headTop+13);ctx.lineTo(cx+hw*.28,headTop+35);ctx.lineTo(cx-hw*.28,headTop+35);ctx.closePath();ctx.fill();
+ }else{
+   ctx.beginPath();ctx.moveTo(cx-hw*.48,headTop+34);
+   ctx.quadraticCurveTo(cx-hw*.42,headTop-9,cx,headTop-8);
+   ctx.quadraticCurveTo(cx+hw*.44,headTop-5,cx+hw*.48,headTop+36);
+   ctx.quadraticCurveTo(cx+hw*.30,headTop+21,cx+hw*.21,headTop+18);
+   ctx.quadraticCurveTo(cx,headTop+9,cx-hw*.48,headTop+34);ctx.fill();
+   if(style==='Longs'){
+     ctx.fillStyle=pGrad(ctx,cx-hw*.55,headTop+18,cx+hw*.55,headTop+hh+80,dark,hair,pMix(hair,'#000',.45));
+     ctx.beginPath();ctx.moveTo(cx-hw*.48,headTop+24);ctx.quadraticCurveTo(cx-hw*.67,headTop+hh*.55,cx-hw*.39,headTop+hh+76);ctx.lineTo(cx-hw*.14,headTop+hh+43);ctx.lineTo(cx-hw*.28,headTop+30);ctx.closePath();ctx.fill();
+     ctx.beginPath();ctx.moveTo(cx+hw*.48,headTop+24);ctx.quadraticCurveTo(cx+hw*.67,headTop+hh*.55,cx+hw*.39,headTop+hh+76);ctx.lineTo(cx+hw*.14,headTop+hh+43);ctx.lineTo(cx+hw*.28,headTop+30);ctx.closePath();ctx.fill();
+   }
+   if(style==='Tressés'){
+     ctx.strokeStyle=dark;ctx.lineWidth=12;ctx.lineCap='round';
+     ctx.beginPath();ctx.moveTo(cx+hw*.38,headTop+33);ctx.bezierCurveTo(cx+hw*.58,headTop+70,cx+hw*.45,headTop+hh+34,cx+hw*.53,headTop+hh+83);ctx.stroke();
+     ctx.strokeStyle=light;ctx.lineWidth=2;
+     for(let i=0;i<6;i++){const yy=headTop+65+i*17;ctx.beginPath();ctx.moveTo(cx+hw*.43,yy);ctx.lineTo(cx+hw*.54,yy+8);ctx.stroke()}
+   }
+ }
+ ctx.restore();
+}
+function drawRaceCharacter(canvas,opt,t=0){
+ if(!canvas)return;
+ const ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height,cx=W/2;
+ ctx.clearRect(0,0,W,H);
+ const race=opt.raceId||'humain',female=opt.sex==='Femme',accent=opt.accent||'#a47e49';
+ const baseSkin=opt.skin||'#d2a176',eyes=opt.eyes||'#6ea8a6',hair=opt.hairColor||'#3a2b24',style=opt.hairStyle||'Courts';
+ const raceTint={humain:'#d2a176',elfe:'#e5cbb7',orc:'#60734d',nain:'#c88f67',draconien:'#963f32',wildren:'#696447',wharn:'#a9cad5',bornak:'#8d6244'}[race]||baseSkin;
+ const tintAmount={humain:.08,elfe:.18,orc:.58,nain:.15,draconien:.62,wildren:.58,wharn:.62,bornak:.52}[race]||.2;
+ const skin=pMix(baseSkin,raceTint,tintAmount),skinDark=pMix(skin,'#25170f',.32),skinLight=pMix(skin,'#ffffff',.22);
+ const breath=Math.sin(t/800)*2;
+ const cfg={
+   humain:{headY:110,hw:86,hh:110,shoulders:female?144:166,torsoY:226,torsoH:126,legH:126},
+   elfe:{headY:99,hw:80,hh:124,shoulders:female?132:148,torsoY:226,torsoH:130,legH:132},
+   orc:{headY:117,hw:114,hh:104,shoulders:female?188:216,torsoY:224,torsoH:137,legH:120},
+   nain:{headY:135,hw:101,hh:96,shoulders:female?176:198,torsoY:230,torsoH:122,legH:88},
+   draconien:{headY:102,hw:101,hh:124,shoulders:female?160:183,torsoY:226,torsoH:134,legH:126},
+   wildren:{headY:104,hw:90,hh:118,shoulders:female?154:178,torsoY:226,torsoH:134,legH:127},
+   wharn:{headY:101,hw:84,hh:120,shoulders:female?148:169,torsoY:226,torsoH:132,legH:130},
+   bornak:{headY:112,hw:106,hh:111,shoulders:female?182:208,torsoY:225,torsoH:139,legH:118}
+ }[race];
+ const yShift=breath;
+
+ // cinematic background
+ const bg=ctx.createRadialGradient(cx,160,20,cx,210,360);bg.addColorStop(0,pColor(pHex(pMix(accent,'#ffffff',.12)),.24));bg.addColorStop(.45,'rgba(18,29,22,.72)');bg.addColorStop(1,'rgba(3,7,5,.98)');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ ctx.fillStyle='rgba(235,197,119,.035)';for(let i=0;i<24;i++){const px=(i*79)%W,py=(i*113)%H;ctx.fillRect(px,py,1.5,1.5)}
+ pEllipse(ctx,cx,477,115,18,'rgba(0,0,0,.58)');
+
+ ctx.save();ctx.translate(0,yShift);
+
+ // legs / boots
+ const legGap=race==='nain'?13:18,legW=race==='orc'||race==='bornak'?42:34,legTop=cfg.torsoY+cfg.torsoH-6,legBottom=475;
+ const clothDark=pMix(accent,'#111914',.72),clothMid=pMix(accent,'#273329',.48),leather=pMix(accent,'#5c321f',.58);
+ for(const side of [-1,1]){
+   const lx=cx+side*(legGap+legW*.35)-legW/2;
+   ctx.fillStyle=pGrad(ctx,lx,legTop,lx+legW,legBottom,clothMid,clothDark,'#0d120f');
+   pRound(ctx,lx,legTop,legW,Math.max(70,legBottom-legTop),12);ctx.fill();
+   ctx.fillStyle='#1c1713';pRound(ctx,lx-3,legBottom-34,legW+8,37,8);ctx.fill();
+ }
+
+ // optional tail behind for draconian
+ if(race==='draconien'){
+   ctx.strokeStyle=pMix(skin,'#5b1715',.4);ctx.lineWidth=22;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(cx+55,cfg.torsoY+110);ctx.bezierCurveTo(cx+135,350,cx+120,420,cx+165,445);ctx.stroke();
+   ctx.strokeStyle=pMix(skinLight,'#bb6b4c',.25);ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(cx+58,cfg.torsoY+109);ctx.bezierCurveTo(cx+134,352,cx+118,417,cx+163,443);ctx.stroke();
+ }
+
+ // arms
+ const shoulderX=cfg.shoulders/2-18,armTop=cfg.torsoY+18,armEnd=race==='nain'?382:398;
+ ctx.lineCap='round';
+ for(const side of [-1,1]){
+   ctx.strokeStyle=skinDark;ctx.lineWidth=race==='orc'||race==='bornak'?41:32;ctx.beginPath();ctx.moveTo(cx+side*shoulderX,armTop);ctx.lineTo(cx+side*(shoulderX+21),armEnd);ctx.stroke();
+   ctx.strokeStyle=pGrad(ctx,cx,armTop,cx+side*120,armEnd,skinLight,skin,skinDark);ctx.lineWidth=race==='orc'||race==='bornak'?33:25;ctx.beginPath();ctx.moveTo(cx+side*shoulderX,armTop);ctx.lineTo(cx+side*(shoulderX+19),armEnd-3);ctx.stroke();
+   pEllipse(ctx,cx+side*(shoulderX+19),armEnd+5,race==='orc'?15:12,race==='orc'?18:15,pGrad(ctx,cx,armEnd,cx,armEnd+20,skinLight,skinDark));
+ }
+
+ // torso
+ const torsoTop=cfg.torsoY,torsoW=cfg.shoulders,waistW=female?torsoW*.57:torsoW*.66,torsoBottom=cfg.torsoY+cfg.torsoH;
+ const armorG=pGrad(ctx,cx-torsoW/2,torsoTop,cx+torsoW/2,torsoBottom,pMix(accent,'#75603a',.2),clothMid,clothDark);
+ ctx.beginPath();ctx.moveTo(cx-torsoW/2,torsoTop+20);ctx.quadraticCurveTo(cx-torsoW*.37,torsoTop-8,cx,torsoTop);
+ ctx.quadraticCurveTo(cx+torsoW*.37,torsoTop-8,cx+torsoW/2,torsoTop+20);
+ ctx.lineTo(cx+waistW/2,torsoBottom);ctx.lineTo(cx-waistW/2,torsoBottom);ctx.closePath();ctx.fillStyle=armorG;ctx.fill();
+ ctx.strokeStyle='rgba(236,204,142,.10)';ctx.lineWidth=2;ctx.stroke();
+
+ // race torso details
+ if(race==='orc'){
+   ctx.strokeStyle='#5c3b24';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(cx-65,torsoTop+18);ctx.lineTo(cx+52,torsoBottom-9);ctx.stroke();
+   ctx.fillStyle='#786342';for(let i=-1;i<=1;i++)pEllipse(ctx,cx+i*34,torsoTop+52,7,5,'#87714d');
+ }
+ if(race==='nain'){
+   ctx.fillStyle='#6a4a2d';pRound(ctx,cx-torsoW*.43,torsoTop+48,torsoW*.86,40,8);ctx.fill();
+   ctx.strokeStyle='#b69356';ctx.lineWidth=3;ctx.stroke();
+ }
+ if(race==='wharn'){
+   ctx.strokeStyle='rgba(225,247,250,.65)';ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(cx-torsoW*.42,torsoTop+13);ctx.quadraticCurveTo(cx,torsoTop+40,cx+torsoW*.42,torsoTop+13);ctx.stroke();
+ }
+ if(race==='wildren'){
+   ctx.strokeStyle='#5a442f';ctx.lineWidth=5;for(let i=-1;i<=1;i++){ctx.beginPath();ctx.moveTo(cx+i*28,torsoTop+5);ctx.bezierCurveTo(cx+i*18,torsoTop+45,cx+i*39,torsoTop+80,cx+i*15,torsoBottom);ctx.stroke()}
+   ctx.fillStyle='#708653';for(const [dx,dy] of [[-50,40],[46,58],[-20,86],[28,100]]){ctx.beginPath();ctx.ellipse(cx+dx,torsoTop+dy,12,5,dx/30,0,Math.PI*2);ctx.fill()}
+ }
+ if(race==='bornak'){
+   ctx.fillStyle=pMix(accent,'#b58658',.35);
+   for(const [dx,dy,w,h] of [[-60,18,54,42],[6,18,54,42],[-44,66,45,45],[2,66,45,45]]){pRound(ctx,cx+dx,torsoTop+dy,w,h,8);ctx.fill();ctx.strokeStyle='#3d2b20';ctx.lineWidth=2;ctx.stroke()}
+ }
+ if(race==='draconien'){
+   ctx.fillStyle=pMix(skin,'#f2b45f',.22);
+   for(let i=0;i<6;i++){ctx.beginPath();ctx.moveTo(cx,torsoTop+8+i*20);ctx.lineTo(cx-13,torsoTop+20+i*20);ctx.lineTo(cx,torsoTop+32+i*20);ctx.lineTo(cx+13,torsoTop+20+i*20);ctx.closePath();ctx.fill()}
+ }
+
+ // belt
+ ctx.fillStyle='#3d2b20';pRound(ctx,cx-waistW*.58,torsoBottom-12,waistW*1.16,19,5);ctx.fill();
+ ctx.strokeStyle='#c29d58';ctx.lineWidth=2;ctx.strokeRect(cx-10,torsoBottom-10,20,14);
+
+ // neck
+ const neckW=race==='orc'||race==='bornak'?43:32,neckH=36;
+ ctx.fillStyle=pGrad(ctx,cx-neckW/2,cfg.headY+cfg.hh*.72,cx+neckW/2,torsoTop+20,skinDark,skin,skinLight);pRound(ctx,cx-neckW/2,torsoTop-neckH,neckW,neckH+8,9);ctx.fill();
+
+ // ears behind head
+ if(race==='elfe'){
+   ctx.fillStyle=skin;
+   for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(cx+side*cfg.hw*.45,cfg.headY+48);ctx.lineTo(cx+side*cfg.hw*.92,cfg.headY+32);ctx.lineTo(cx+side*cfg.hw*.50,cfg.headY+70);ctx.closePath();ctx.fill()}
+ }
+ if(race==='orc'){
+   ctx.fillStyle=skinDark;
+   for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(cx+side*cfg.hw*.46,cfg.headY+45);ctx.lineTo(cx+side*cfg.hw*.74,cfg.headY+37);ctx.lineTo(cx+side*cfg.hw*.50,cfg.headY+65);ctx.closePath();ctx.fill()}
+ }
+
+ // horns / antlers behind head
+ if(race==='draconien'){
+   for(const side of [-1,1]){
+     const hg=ctx.createLinearGradient(cx+side*30,cfg.headY+15,cx+side*70,cfg.headY-65);hg.addColorStop(0,'#6d5841');hg.addColorStop(1,'#e1d4b5');ctx.fillStyle=hg;
+     ctx.beginPath();ctx.moveTo(cx+side*30,cfg.headY+21);ctx.quadraticCurveTo(cx+side*55,cfg.headY-12,cx+side*70,cfg.headY-60);ctx.quadraticCurveTo(cx+side*40,cfg.headY-29,cx+side*18,cfg.headY+17);ctx.closePath();ctx.fill();
+   }
+ }
+ if(race==='wildren'){
+   ctx.strokeStyle='#56412d';ctx.lineWidth=8;ctx.lineCap='round';
+   for(const side of [-1,1]){
+     ctx.beginPath();ctx.moveTo(cx+side*26,cfg.headY+14);ctx.lineTo(cx+side*39,cfg.headY-37);ctx.lineTo(cx+side*65,cfg.headY-67);ctx.stroke();
+     ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(cx+side*43,cfg.headY-37);ctx.lineTo(cx+side*71,cfg.headY-30);ctx.moveTo(cx+side*55,cfg.headY-52);ctx.lineTo(cx+side*62,cfg.headY-82);ctx.stroke();ctx.lineWidth=8;
+   }
+   ctx.fillStyle='#6f8d57';for(const [dx,dy] of [[-70,-52],[-55,-76],[61,-75],[76,-34],[-40,-47],[43,-54]])pEllipse(ctx,cx+dx,cfg.headY+dy,12,6,'#718d59');
+ }
+ if(race==='wharn'){
+   ctx.fillStyle='rgba(189,235,247,.80)';
+   for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(cx+side*32,cfg.headY+18);ctx.lineTo(cx+side*50,cfg.headY-44);ctx.lineTo(cx+side*18,cfg.headY+8);ctx.closePath();ctx.fill()}
+ }
+
+ // head
+ const headTop=cfg.headY;
+ if(race==='orc'){
+   ctx.beginPath();ctx.moveTo(cx-cfg.hw*.46,headTop+20);ctx.quadraticCurveTo(cx-cfg.hw*.52,headTop+52,cx-cfg.hw*.40,headTop+81);ctx.lineTo(cx-cfg.hw*.27,headTop+cfg.hh);ctx.lineTo(cx+cfg.hw*.27,headTop+cfg.hh);ctx.lineTo(cx+cfg.hw*.42,headTop+81);ctx.quadraticCurveTo(cx+cfg.hw*.52,headTop+50,cx+cfg.hw*.46,headTop+20);ctx.quadraticCurveTo(cx,headTop-12,cx-cfg.hw*.46,headTop+20);ctx.closePath();
+ }else if(race==='draconien'){
+   ctx.beginPath();ctx.moveTo(cx-cfg.hw*.42,headTop+18);ctx.quadraticCurveTo(cx-cfg.hw*.48,headTop+60,cx-cfg.hw*.22,headTop+90);ctx.lineTo(cx-cfg.hw*.12,headTop+cfg.hh);ctx.lineTo(cx+cfg.hw*.18,headTop+cfg.hh);ctx.quadraticCurveTo(cx+cfg.hw*.47,headTop+88,cx+cfg.hw*.46,headTop+25);ctx.quadraticCurveTo(cx,headTop-9,cx-cfg.hw*.42,headTop+18);ctx.closePath();
+ }else if(race==='bornak'){
+   ctx.beginPath();ctx.moveTo(cx-cfg.hw*.47,headTop+22);ctx.lineTo(cx-cfg.hw*.38,headTop+83);ctx.lineTo(cx-cfg.hw*.20,headTop+cfg.hh);ctx.lineTo(cx+cfg.hw*.22,headTop+cfg.hh);ctx.lineTo(cx+cfg.hw*.46,headTop+77);ctx.lineTo(cx+cfg.hw*.48,headTop+20);ctx.quadraticCurveTo(cx,headTop-16,cx-cfg.hw*.47,headTop+22);ctx.closePath();
+ }else{
+   ctx.beginPath();ctx.moveTo(cx-cfg.hw*.43,headTop+26);ctx.bezierCurveTo(cx-cfg.hw*.48,headTop+72,cx-cfg.hw*.32,headTop+cfg.hh,cx,headTop+cfg.hh+5);ctx.bezierCurveTo(cx+cfg.hw*.32,headTop+cfg.hh,cx+cfg.hw*.48,headTop+72,cx+cfg.hw*.43,headTop+26);ctx.quadraticCurveTo(cx,headTop-13,cx-cfg.hw*.43,headTop+26);ctx.closePath();
+ }
+ ctx.fillStyle=pGrad(ctx,cx-cfg.hw/2,headTop,cx+cfg.hw/2,headTop+cfg.hh,skinDark,skin,skinLight);ctx.fill();
+ ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1.5;ctx.stroke();
+
+ // race face textures
+ if(race==='draconien'){
+   ctx.strokeStyle='rgba(255,226,166,.16)';ctx.lineWidth=2;
+   for(let row=0;row<5;row++)for(let col=-2;col<=2;col++){const xx=cx+col*15+(row%2?7:0),yy=headTop+24+row*16;ctx.beginPath();ctx.arc(xx,yy,6,Math.PI*.15,Math.PI*.85);ctx.stroke()}
+   // snout
+   ctx.fillStyle=pMix(skin,'#5c221c',.32);pRound(ctx,cx-28,headTop+69,56,37,14);ctx.fill();
+   ctx.fillStyle='#2c1715';pEllipse(ctx,cx-14,headTop+80,4,3,'#241313');pEllipse(ctx,cx+14,headTop+80,4,3,'#241313');
+ }
+ if(race==='wildren'){
+   ctx.strokeStyle='#4d3b29';ctx.lineWidth=3;
+   for(const off of [-24,0,23]){ctx.beginPath();ctx.moveTo(cx+off,headTop+18);ctx.bezierCurveTo(cx+off-8,headTop+45,cx+off+8,headTop+72,cx+off-3,headTop+105);ctx.stroke()}
+   ctx.fillStyle='#78945e';pEllipse(ctx,cx-37,headTop+18,12,5,'#78945e');pEllipse(ctx,cx+36,headTop+12,11,5,'#78945e');
+ }
+ if(race==='wharn'){
+   ctx.strokeStyle='rgba(210,248,255,.43)';ctx.lineWidth=2;
+   ctx.beginPath();ctx.moveTo(cx-18,headTop+10);ctx.lineTo(cx-8,headTop+40);ctx.lineTo(cx-20,headTop+60);ctx.moveTo(cx+25,headTop+22);ctx.lineTo(cx+12,headTop+48);ctx.lineTo(cx+24,headTop+76);ctx.stroke();
+ }
+ if(race==='bornak'){
+   ctx.fillStyle=pMix(accent,'#c69a67',.30);
+   for(const [dx,dy,w,h] of [[-39,8,35,28],[4,8,35,28],[-45,39,42,26],[3,39,42,26]]){pRound(ctx,cx+dx,headTop+dy,w,h,7);ctx.fill();ctx.strokeStyle='#3b291e';ctx.lineWidth=2;ctx.stroke()}
+ }
+
+ // eyes
+ const eyeY=headTop+(race==='orc'?51:race==='draconien'?51:race==='nain'?48:55),eyeDX=race==='orc'?28:race==='draconien'?24:22;
+ for(const side of [-1,1]){
+   ctx.fillStyle=race==='draconien'?'#f2d38a':'rgba(238,239,222,.86)';ctx.beginPath();ctx.ellipse(cx+side*eyeDX,eyeY,race==='orc'?11:10,5.5,side*.08,0,Math.PI*2);ctx.fill();
+   pEllipse(ctx,cx+side*eyeDX,eyeY,race==='draconien'?4:4.5,race==='draconien'?4.8:4.5,eyes);
+   ctx.fillStyle='#12110e';
+   if(race==='draconien'||race==='wharn'){ctx.fillRect(cx+side*eyeDX-1,eyeY-4,2,8)}else pEllipse(ctx,cx+side*eyeDX,eyeY,2.2,2.2,'#111');
+   pEllipse(ctx,cx+side*eyeDX-1.5,eyeY-1.4,1,1,'rgba(255,255,255,.8)');
+ }
+ // brows
+ ctx.strokeStyle=race==='orc'?pMix(skinDark,'#111',.45):pMix(hair,'#19120f',.45);ctx.lineWidth=race==='orc'?7:4;ctx.lineCap='round';
+ ctx.beginPath();ctx.moveTo(cx-eyeDX-12,eyeY-13);ctx.lineTo(cx-eyeDX+10,eyeY-16);ctx.moveTo(cx+eyeDX-10,eyeY-16);ctx.lineTo(cx+eyeDX+12,eyeY-13);ctx.stroke();
+
+ // nose/mouth/tusks/beard
+ if(race!=='draconien'){
+   ctx.strokeStyle='rgba(52,27,20,.35)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx,eyeY+5);ctx.lineTo(cx-3,eyeY+27);ctx.lineTo(cx+5,eyeY+29);ctx.stroke();
+   ctx.strokeStyle='rgba(62,26,25,.55)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-17,eyeY+44);ctx.quadraticCurveTo(cx,eyeY+49,cx+17,eyeY+44);ctx.stroke();
+ }
+ if(race==='orc'){
+   ctx.fillStyle='#e5d7b6';for(const side of [-1,1]){ctx.beginPath();ctx.moveTo(cx+side*18,eyeY+47);ctx.lineTo(cx+side*29,eyeY+24);ctx.lineTo(cx+side*8,eyeY+44);ctx.closePath();ctx.fill()}
+ }
+ if(race==='nain'){
+   const beard=pGrad(ctx,cx-50,eyeY+37,cx+50,eyeY+135,pMix(hair,'#111',.35),hair,pMix(hair,'#b87342',.12));
+   ctx.fillStyle=beard;ctx.beginPath();ctx.moveTo(cx-45,eyeY+34);ctx.quadraticCurveTo(cx-52,eyeY+86,cx,eyeY+139);ctx.quadraticCurveTo(cx+52,eyeY+86,cx+45,eyeY+34);ctx.quadraticCurveTo(cx,eyeY+57,cx-45,eyeY+34);ctx.closePath();ctx.fill();
+   ctx.strokeStyle=pMix(hair,'#fff',.14);ctx.lineWidth=2;for(const dx of [-22,0,22]){ctx.beginPath();ctx.moveTo(cx+dx,eyeY+55);ctx.quadraticCurveTo(cx+dx-8,eyeY+90,cx+dx,eyeY+121);ctx.stroke()}
+ }
+
+ // head hair after face
+ drawPreviewHair(ctx,cx,headTop,cfg.hw,cfg.hh,hair,style,race);
+
+ // extra crown leaves for wildren
+ if(race==='wildren'){
+   for(const [dx,dy,rot] of [[-34,8,-.6],[-10,-3,-.2],[18,-6,.2],[42,8,.65]]){ctx.save();ctx.translate(cx+dx,headTop+dy);ctx.rotate(rot);ctx.fillStyle='#79985e';ctx.beginPath();ctx.ellipse(0,0,15,6,0,0,Math.PI*2);ctx.fill();ctx.restore()}
+ }
+
+ // Bornak crown plate
+ if(race==='bornak'){
+   ctx.fillStyle='#7c573d';ctx.beginPath();ctx.moveTo(cx-38,headTop+10);ctx.lineTo(cx-18,headTop-28);ctx.lineTo(cx,headTop+4);ctx.lineTo(cx+18,headTop-28);ctx.lineTo(cx+38,headTop+10);ctx.closePath();ctx.fill();
+ }
+
+ // subtle rim light
+ ctx.strokeStyle=pColor(pHex(pMix(accent,'#f4d58b',.45)),.30);ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,headTop+58,cfg.hw*.52,0.15,2.7);ctx.stroke();
+
+ ctx.restore();
+}
+function currentCreatorPreview(){
+ const r=race(FE.selectedRace);
+ return {raceId:r.id,sex:document.getElementById('charSex').value,skin:FE.skin,eyes:FE.eyes,hairColor:FE.hair,hairStyle:document.getElementById('charHair').value,accent:r.accent};
+}
+function animateRacePreviews(t){
+ if(t-previewState.last>70){
+   previewState.last=t;
+   const create=document.getElementById('screen-create');
+   if(create&&create.classList.contains('active')&&previewState.creator)drawRaceCharacter(document.getElementById('charPreviewCanvas'),previewState.creator,t);
+   const existing=document.getElementById('screen-existing');
+   if(existing&&existing.classList.contains('active')&&previewState.existing)drawRaceCharacter(document.getElementById('existingPreviewCanvas'),previewState.existing,t);
+ }
+ requestAnimationFrame(animateRacePreviews);
+}
+requestAnimationFrame(animateRacePreviews);
+
 function updatePreview(){
  const r=race(FE.selectedRace),sex=document.getElementById('charSex').value,n=document.getElementById('charName').value.trim();
- const model=document.getElementById('charModel');
- const hairClass='hair-'+document.getElementById('charHair').value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]/g,'');
- model.className='character-model race-'+r.id+' '+hairClass;
- model.dataset.sex=sex;
- model.style.setProperty('--skin',FE.skin);
- model.style.setProperty('--eye',FE.eyes);
- model.style.setProperty('--hair',FE.hair);
- model.style.setProperty('--accent',r.accent);
+ previewState.creator=currentCreatorPreview();
+ drawRaceCharacter(document.getElementById('charPreviewCanvas'),previewState.creator,performance.now());
  document.querySelector('.preview-stage').style.setProperty('--raceAccent',r.accent);
  document.getElementById('previewRace').textContent=r.name+' • '+sex;
  document.getElementById('raceLore').textContent=r.lore;
@@ -1101,11 +1398,8 @@ function renderExisting(c){
  const r=race(c.raceId);
  document.getElementById('existingServer').textContent=FE.selectedServer.name+' • '+FE.selectedServer.mode;
  const stage=document.getElementById('existingStage');stage.style.setProperty('--existing-accent',r.accent);
- const em=document.getElementById('existingModel');
- const hairClass='hair-'+String(c.hair||'Courts').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]/g,'');
- em.className='character-model existing-character-model race-'+r.id+' '+hairClass;
- em.dataset.sex=c.sex||'Homme';
- em.style.setProperty('--skin',c.skin||r.skin);em.style.setProperty('--eye',c.eyes||r.eyes);em.style.setProperty('--hair',c.hairColor||r.hair);em.style.setProperty('--accent',r.accent);
+ previewState.existing={raceId:r.id,sex:c.sex||'Homme',skin:c.skin||r.skin,eyes:c.eyes||r.eyes,hairColor:c.hairColor||r.hair,hairStyle:c.hair||'Courts',accent:r.accent};
+ drawRaceCharacter(document.getElementById('existingPreviewCanvas'),previewState.existing,performance.now());
  document.getElementById('existingName').textContent=c.name;
  document.getElementById('existingRace').textContent=c.raceName+' • '+c.sex+' • '+c.hair;
  document.getElementById('existingLevel').textContent=c.level||1;
