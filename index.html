@@ -310,27 +310,190 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
 .race-draconien .cm-hair,.race-bornak .cm-hair{display:none!important}
 @media(max-width:800px){#screen-main{padding:28px 22px;align-items:flex-end}.menu-title{font-size:60px}.menu-scene-copy{display:none}.menu-emblem{width:42px;height:42px}.main-box{padding-bottom:20px}.existing-hero{grid-template-columns:1fr}.existing-stage{height:360px}.existing-character-model{transform:translateY(8px) scale(.9)}}
 
+
+/* ===== EVERWILD MAIN MENU V4 — reference image ===== */
+#screen-main{
+  position:relative!important;
+  width:100vw!important;
+  height:100vh!important;
+  min-height:100vh!important;
+  overflow:hidden!important;
+  padding:0!important;
+  display:none;
+  align-items:center!important;
+  justify-content:center!important;
+  isolation:isolate;
+}
+#screen-main.active{display:flex!important}
+#screen-main:before,#screen-main:after{display:none!important}
+.everwild-menu-bg{
+  position:absolute;inset:0;z-index:-3;
+  background-image:url("https://images.unsplash.com/photo-1753709697924-3f30695a50d7?auto=format&fit=crop&fm=jpg&q=85&w=2400");
+  background-size:cover;
+  background-position:center 48%;
+  transform:scale(1.025);
+  filter:saturate(.92) contrast(1.06) brightness(.84);
+}
+.everwild-menu-shade{
+  position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(255,190,82,.10),transparent 29%),
+    linear-gradient(90deg,rgba(3,6,4,.35),rgba(2,4,3,.05) 28%,rgba(2,4,3,.08) 70%,rgba(3,6,4,.35)),
+    linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.08) 55%,rgba(0,0,0,.55));
+  box-shadow:inset 0 0 130px rgba(0,0,0,.48);
+}
+.everwild-main-content{
+  width:min(610px,90vw);
+  margin-top:-2vh;
+  text-align:center;
+  color:#f6ead1;
+  text-shadow:0 3px 12px #000,0 1px 2px #000;
+}
+.everwild-ornament{
+  color:#d1a960;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(10px,1.1vw,15px);
+  letter-spacing:3px;
+  opacity:.95;
+  margin-bottom:4px;
+}
+.everwild-logo-title{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(66px,8vw,126px);
+  font-weight:500;
+  line-height:.9;
+  letter-spacing:6px;
+  color:#e5b65e;
+  -webkit-text-stroke:1px rgba(255,235,183,.68);
+  text-shadow:
+    0 2px 0 #4b2d0b,
+    0 5px 0 #1c1208,
+    0 12px 28px rgba(0,0,0,.9),
+    0 0 30px rgba(236,170,58,.2);
+}
+.everwild-logo-sub{
+  margin-top:10px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(11px,1.35vw,18px);
+  letter-spacing:8px;
+  color:#e9cf95;
+}
+.everwild-tagline{
+  margin:24px auto 12px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(18px,2vw,29px);
+  line-height:1.08;
+  letter-spacing:2px;
+  color:#f0e5cf;
+}
+.everwild-divider{
+  width:min(270px,65vw);
+  margin:14px auto 18px;
+  display:flex;align-items:center;gap:13px;color:#d5ae64
+}
+.everwild-divider span{height:1px;flex:1;background:linear-gradient(90deg,transparent,#d5ae64)}
+.everwild-divider span:last-child{background:linear-gradient(90deg,#d5ae64,transparent)}
+.everwild-divider i{font-style:normal;font-size:16px}
+.everwild-main-buttons{
+  width:min(390px,84vw);
+  margin:0 auto;
+  display:grid;
+  gap:12px;
+}
+.ew-menu-button{
+  position:relative;
+  width:100%;
+  min-height:58px;
+  padding:0 25px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(201,159,81,.62);
+  border-radius:2px;
+  background:
+    linear-gradient(90deg,rgba(5,8,7,.88),rgba(17,18,16,.91),rgba(5,8,7,.88));
+  color:#eee4d1;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(16px,1.45vw,22px);
+  font-weight:500;
+  letter-spacing:1.5px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,224,164,.06),
+    inset 0 0 24px rgba(0,0,0,.35),
+    0 8px 20px rgba(0,0,0,.32);
+  cursor:pointer;
+  transition:.18s ease;
+}
+.ew-menu-button:before,.ew-menu-button:after{
+  content:"◇";
+  position:absolute;top:50%;transform:translateY(-50%);
+  color:#a98145;font-size:12px
+}
+.ew-menu-button:before{left:10px}.ew-menu-button:after{right:10px}
+.ew-menu-button b{
+  position:absolute;right:24px;
+  font-size:25px;font-weight:400;color:#fff2ce
+}
+.ew-menu-button:hover,.ew-menu-button:active{
+  transform:translateY(-1px);
+  border-color:#ffd77c;
+  box-shadow:0 0 22px rgba(255,176,43,.28),inset 0 0 24px rgba(180,111,18,.22);
+}
+.ew-menu-button.ew-primary{
+  border-color:#efbd58;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(184,103,17,.58),rgba(74,36,7,.88) 55%,rgba(18,12,8,.93));
+  color:#fff4dc;
+  box-shadow:
+    0 0 16px rgba(255,169,34,.45),
+    inset 0 0 25px rgba(255,155,25,.20),
+    inset 0 0 0 1px rgba(255,226,164,.16);
+}
+.everwild-version{
+  margin-top:18px;
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:rgba(235,224,202,.72);
+}
+@media(max-width:700px){
+  .everwild-menu-bg{
+    background-position:center center;
+    filter:saturate(.90) contrast(1.08) brightness(.62) blur(.35px);
+  }
+  .everwild-menu-shade{
+    background:
+      radial-gradient(circle at 50% 28%,rgba(223,158,64,.10),transparent 28%),
+      linear-gradient(180deg,rgba(3,6,4,.20),rgba(3,6,4,.48) 48%,rgba(2,4,3,.72));
+    box-shadow:inset 0 0 80px rgba(0,0,0,.58)
+  }
+  .everwild-main-content{margin-top:-4vh;width:92vw}
+  .everwild-logo-title{font-size:clamp(54px,17vw,78px);letter-spacing:3px}
+  .everwild-logo-sub{font-size:10px;letter-spacing:5px}
+  .everwild-tagline{font-size:20px;margin-top:26px}
+  .everwild-main-buttons{width:min(380px,86vw);gap:11px}
+  .ew-menu-button{min-height:58px;font-size:18px}
+}
+
 </style>
 </head>
 <body>
 
 <div id="frontEnd">
   <section id="screen-main" class="menu-screen active">
-    <div class="main-box">
-      <div class="menu-emblem"><span>✦</span></div>
-      <div class="menu-kicker">SURVIE • MONDE PERSISTANT • MÉDIÉVAL-FANTASY</div>
-      <h1 class="menu-title">EVERWILD</h1>
-      <div class="menu-sub">LES TERRES SAUVAGES T’ATTENDENT</div>
-      <div class="menu-rule"><span></span><i>✦</i><span></span></div>
-      <p class="menu-intro">Choisis ton serveur, retrouve ton survivant et poursuis son histoire. Un personnage unique par serveur.</p>
-      <div class="main-actions">
-        <button class="menu-btn primary" id="playMenuBtn"><b>JOUER</b><small>Rejoindre un serveur</small></button>
-        <button class="menu-btn" id="charactersBtn"><b>PERSONNAGE</b><small>Consulter ton survivant</small></button>
-        <button class="menu-btn" id="settingsBtn"><b>PARAMÈTRES</b><small>Audio, affichage et commandes</small></button>
+    <div class="everwild-menu-bg" aria-hidden="true"></div>
+    <div class="everwild-menu-shade" aria-hidden="true"></div>
+    <div class="everwild-main-content">
+      <div class="everwild-ornament">◇ ───── ✦ ───── ◇</div>
+      <h1 class="everwild-logo-title">EVERWILD</h1>
+      <div class="everwild-logo-sub">SURVIVAL FANTASY</div>
+      <div class="everwild-tagline">Un monde sauvage<br>vous attend.</div>
+      <div class="everwild-divider"><span></span><i>◇</i><span></span></div>
+      <div class="everwild-main-buttons">
+        <button id="playMenuBtn" class="ew-menu-button ew-primary"><span>JOUER</span><b>›</b></button>
+        <button id="settingsBtn" class="ew-menu-button"><span>PARAMÈTRES</span></button>
+        <button id="quitBtn" class="ew-menu-button"><span>QUITTER</span></button>
       </div>
-      <div class="menu-foot">PROTOTYPE EVERWILD • VERSION SURVIE</div>
+      <div class="everwild-version">v0.2 • Prototype</div>
     </div>
-    <div class="menu-scene-copy"><span>VANTUMAN</span><b>Un monde ancien. Une seule vie à la fois.</b></div>
   </section>
 
   <section id="screen-servers" class="menu-screen">
@@ -659,8 +822,9 @@ function renderExisting(c){
  document.getElementById('existingXp').textContent=c.xp||0;
 }
 document.getElementById('playMenuBtn').onclick=()=>{renderServers();show('servers')};
-document.getElementById('charactersBtn').onclick=()=>{renderServers();show('servers')};
+const charactersBtn=document.getElementById('charactersBtn');if(charactersBtn)charactersBtn.onclick=()=>{renderServers();show('servers')};
 document.getElementById('settingsBtn').onclick=()=>alert('Les paramètres seront ajoutés après le système de personnage.');
+document.getElementById('quitBtn').onclick=()=>{if(history.length>1){history.back()}else{alert('Tu peux fermer cet onglet pour quitter le prototype.')}};
 document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>show(b.dataset.back));
 document.getElementById('charName').addEventListener('input',updatePreview);
 document.getElementById('charSex').addEventListener('change',updatePreview);
