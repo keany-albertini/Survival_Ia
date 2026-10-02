@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Everwild — Humain 3D V2</title>
+<style>
+:root{--gold:#c89c56;--gold2:#edcf8c;--panel:rgba(5,9,7,.92);--line:rgba(200,156,86,.32);--txt:#f1eadc;--muted:#aaa297}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030504;color:var(--txt);font-family:Georgia,"Times New Roman",serif}
+#app{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#1b2820 0,#0a100c 48%,#030504 100%)}
+#viewport{position:absolute;inset:0}canvas{display:block;width:100%;height:100%;touch-action:none}
+.top{position:absolute;z-index:6;left:0;right:0;top:0;padding:calc(14px + env(safe-area-inset-top)) 18px 12px;background:linear-gradient(180deg,rgba(3,5,4,.92),rgba(3,5,4,0));pointer-events:none}
+.kicker{font:10px Arial,sans-serif;letter-spacing:.32em;color:var(--gold2);opacity:.82}.title{font-size:clamp(26px,5vw,42px);line-height:1.03;margin-top:6px;text-shadow:0 3px 24px #000}.sub{margin-top:7px;font:12px Arial,sans-serif;color:#c8c0b3}.pill{display:inline-block;margin-left:7px;border:1px solid var(--line);padding:3px 6px;color:#dbc58f;font-size:9px}
+.panel{position:absolute;z-index:7;right:14px;top:118px;width:min(385px,calc(100vw - 28px));max-height:calc(100vh - 140px - env(safe-area-inset-bottom));overflow:auto;padding:15px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(8,13,10,.96),rgba(4,7,5,.93));box-shadow:0 20px 70px #000b;backdrop-filter:blur(10px)}
+.panel h2{margin:0;font-size:19px}.section{border-top:1px solid rgba(200,156,86,.16);margin-top:12px;padding-top:12px}.section h3{margin:0 0 9px;font:11px Arial,sans-serif;letter-spacing:.18em;color:#cbb78a;text-transform:uppercase}
+.control{margin:9px 0}.lab{display:flex;justify-content:space-between;gap:12px;margin-bottom:5px;font:11px Arial,sans-serif;color:#d4cdbc}.val{color:var(--gold2)}input[type=range]{width:100%;accent-color:var(--gold);height:22px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}.sw{width:29px;height:29px;border-radius:50%;border:1px solid #ffffff2a;box-shadow:0 0 0 2px transparent;cursor:pointer}.sw.active{box-shadow:0 0 0 2px #070a08,0 0 0 4px var(--gold)}
+.btn{width:100%;padding:13px;margin-top:11px;border:1px solid #bd8e44;color:#fff7e8;background:linear-gradient(#5b210e,#2e0e07);font:700 14px Georgia,serif;letter-spacing:.08em}.btn2{background:#111712;border-color:#ffffff22;color:#d5cec1}
+.status{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%);min-width:250px;text-align:center;padding:18px 22px;border:1px solid var(--line);background:#050806ee;box-shadow:0 15px 50px #000}.spin{width:27px;height:27px;margin:0 auto 11px;border:2px solid #ffffff1d;border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}.hidden{display:none!important}
+.hint{position:absolute;z-index:5;left:14px;bottom:16px;padding:8px 10px;border:1px solid #ffffff12;background:#050806ba;font:10px Arial,sans-serif;color:#c8c0b3}
+.meta{margin-top:8px;font:9px/1.45 Arial,sans-serif;color:#7e796f}
+#count{color:#ddb970}
+@media(max-width:760px){.top{padding-left:14px}.title{font-size:29px}.sub{max-width:320px}.panel{left:10px;right:10px;top:auto;bottom:calc(8px + env(safe-area-inset-bottom));width:auto;max-height:45vh;padding:12px}.hint{left:10px;bottom:calc(45vh + 18px + env(safe-area-inset-bottom))}.panel h2{font-size:17px}}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="app">
+ <div id="viewport"></div>
+ <div class="top">
+   <div class="kicker">EVERWILD • CRÉATION DE PERSONNAGE</div>
+   <div class="title">Humain — prototype 3D réaliste V2</div>
+   <div class="sub">Vrai mesh paramétrique • morphs du visage et du corps <span class="pill" id="meshBadge">chargement…</span></div>
+ </div>
+ <aside class="panel">
+   <h2>Personnalisation réelle</h2>
+   <div class="meta">Ici les curseurs déplacent les sommets du vrai modèle 3D. Aucun portrait 2D et aucun mannequin Canvas.</div>
+   <div class="section">
+     <h3>Peau</h3>
+     <div class="swatches" id="skins"></div>
+   </div>
+   <div class="section">
+     <h3>Corps</h3>
+     <div id="bodyControls"></div>
+   </div>
+   <div class="section">
+     <h3>Visage</h3>
+     <div id="faceControls"></div>
+   </div>
+   <div class="section">
+     <h3>Informations du mesh</h3>
+     <div class="meta"><span id="count">—</span> morphs détectés dans le GLB • squelette humanoïde intégré.</div>
+   </div>
+   <button class="btn" id="save">UTILISER CET HUMAIN</button>
+   <button class="btn btn2" id="reset">Réinitialiser</button>
+ </aside>
+ <div class="hint">Glisse pour tourner • pince/molette pour zoomer</div>
+ <div class="status" id="status"><div class="spin"></div><div id="statusText">Chargement du modèle humain paramétrique…</div></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+const root=document.getElementById('viewport');
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x030504);scene.fog=new THREE.FogExp2(0x050806,.055);
+const camera=new THREE.PerspectiveCamera(31,1,.01,100);camera.position.set(0,1.33,3.55);
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.13;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;root.appendChild(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.enableDamping=true;controls.minDistance=1.65;controls.maxDistance=4.5;controls.target.set(0,1.12,0);controls.minPolarAngle=.5;controls.maxPolarAngle=1.72;
+
+scene.add(new THREE.HemisphereLight(0xbfd2c6,0x17110d,1.45));
+const key=new THREE.DirectionalLight(0xffd7a6,3.7);key.position.set(-2.2,3.8,3.0);key.castShadow=true;scene.add(key);
+const fill=new THREE.DirectionalLight(0x82a6ff,1.75);fill.position.set(2.5,2.4,-3);scene.add(fill);
+const warm=new THREE.PointLight(0xff6f2d,4.2,6,2);warm.position.set(-2.0,.8,1.7);scene.add(warm);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(3.2,96),new THREE.MeshStandardMaterial({color:0x111612,roughness:.98}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const ring=new THREE.Mesh(new THREE.RingGeometry(1.18,1.20,96),new THREE.MeshBasicMaterial({color:0x84602f,transparent:true,opacity:.45,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.004;scene.add(ring);
+
+const hero=new THREE.Group();scene.add(hero);
+let model=null,morphMeshes=[],materials=[],baseScale=1;
+const sources=[
+ 'https://raw.githubusercontent.com/nirholas/three.ws/main/public/avatars/parametric-base.glb',
+ 'https://three.ws/avatars/parametric-base.glb'
+];
+
+const skins=[['Claire','#e9c9b0'],['Naturelle','#d1a078'],['Dorée','#bd8059'],['Mate','#9e6548'],['Brune','#754836'],['Foncée','#4b2d24']];
+const skinBox=document.getElementById('skins');
+skins.forEach(([n,c],i)=>{const b=document.createElement('button');b.className='sw'+(i===1?' active':'');b.style.background=c;b.title=n;b.dataset.color=c;b.onclick=()=>{document.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));b.classList.add('active');applySkin(c)};skinBox.appendChild(b)});
+
+const controlsDef={
+ body:[
+  ['Musculature','bodyMuscular','bodySofter'],
+  ['Corpulence','bodyHeavier','bodyThinner'],
+  ['Taille','heightTaller','heightShorter'],
+  ['Épaules','shouldersWider','shouldersNarrower'],
+  ['Torse','chestWider','chestNarrower'],
+  ['Taille / ventre','waistWider','waistNarrower'],
+  ['Hanches','hipsWider','hipsNarrower'],
+  ['Bras','armsMuscular','armsThinner'],
+  ['Cuisses','thighsMuscular','thighsThinner']
+ ],
+ face:[
+  ['Largeur tête','headWider','headNarrower'],
+  ['Forme mâchoire','jawWider','jawNarrower'],
+  ['Menton','jawChinProminent','jawChinRecessed'],
+  ['Pommettes','cheekBonesLeft','cheekFlatterLeft'],
+  ['Largeur nez','noseWider','noseNarrower'],
+  ['Longueur nez','noseLonger','noseShorter'],
+  ['Taille yeux','eyeBiggerLeft','eyeSmallerLeft'],
+  ['Largeur bouche','mouthWider','mouthNarrower'],
+  ['Lèvres','mouthLowerLipFuller','mouthLowerLipThinner']
+ ]
+};
+
+function makeSlider(parent,label,pos,neg){
+ const wrap=document.createElement('div');wrap.className='control';
+ const lab=document.createElement('div');lab.className='lab';lab.innerHTML='<span>'+label+'</span><span class="val">0</span>';wrap.appendChild(lab);
+ const inp=document.createElement('input');inp.type='range';inp.min=-100;inp.max=100;inp.value=0;inp.step=1;wrap.appendChild(inp);
+ inp.oninput=()=>{lab.querySelector('.val').textContent=(+inp.value>0?'+':'')+inp.value;applyPair(pos,neg,+inp.value/100)};
+ parent.appendChild(wrap);
+}
+controlsDef.body.forEach(x=>makeSlider(document.getElementById('bodyControls'),...x));
+controlsDef.face.forEach(x=>makeSlider(document.getElementById('faceControls'),...x));
+
+function setMorph(name,value){
+ let hit=false;
+ for(const mesh of morphMeshes){
+  const d=mesh.morphTargetDictionary;if(!d||d[name]===undefined)continue;
+  mesh.morphTargetInfluences[d[name]]=Math.max(0,Math.min(1,value));hit=true;
+ }
+ return hit;
+}
+function setSides(name,value){
+ let hit=setMorph(name,value);
+ if(/Left$/.test(name)){hit=setMorph(name.replace(/Left$/,'Right'),value)||hit}
+ return hit;
+}
+function applyPair(pos,neg,v){
+ setSides(pos,Math.max(0,v));setSides(neg,Math.max(0,-v));
+}
+function applySkin(hex){
+ const col=new THREE.Color(hex);
+ for(const {mesh,kind} of materials){
+  if(kind==='body'){
+   const m=new THREE.MeshPhysicalMaterial({color:col,roughness:.58,metalness:0,clearcoat:.08,clearcoatRoughness:.6,sheen:0.18,sheenColor:new THREE.Color(hex)});
+   mesh.material=m;
+  }
+ }
+}
+function classify(o){
+ const n=(o.name+' '+(o.material?.name||'')).toLowerCase();
+ if(/eye/.test(n))return'eye';if(/teeth|tooth/.test(n))return'teeth';if(/tongue/.test(n))return'tongue';return'body';
+}
+function upgradeMaterials(){
+ materials=[];
+ model.traverse(o=>{
+  if(!o.isMesh)return;
+  const kind=classify(o);materials.push({mesh:o,kind});
+  if(kind==='eye')o.material=new THREE.MeshPhysicalMaterial({color:0xd9e4e7,roughness:.12,metalness:0,clearcoat:1,clearcoatRoughness:.04,ior:1.376});
+  if(kind==='teeth')o.material=new THREE.MeshStandardMaterial({color:0xe9e2d3,roughness:.4});
+  if(kind==='tongue')o.material=new THREE.MeshStandardMaterial({color:0x8d4a49,roughness:.65});
+ });
+ applySkin(document.querySelector('.sw.active')?.dataset.color||'#d1a078');
+}
+function normalize(){
+ model.updateMatrixWorld(true);let box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3());
+ const s=1.78/Math.max(.001,size.y);model.scale.setScalar(s);model.updateMatrixWorld(true);
+ box=new THREE.Box3().setFromObject(model);const c=box.getCenter(new THREE.Vector3());model.position.set(-c.x,-box.min.y,-c.z);model.updateMatrixWorld(true);
+ box=new THREE.Box3().setFromObject(model);size=box.getSize(new THREE.Vector3());const center=box.getCenter(new THREE.Vector3());
+ controls.target.set(center.x,Math.min(1.18,center.y+.12),center.z);camera.position.set(0,1.28,Math.max(2.75,size.y*1.78));controls.update();
+}
+async function loadReal(){
+ const loader=new GLTFLoader();let gltf=null,last=null;
+ for(const url of sources){try{gltf=await loader.loadAsync(url);break}catch(e){last=e}}
+ if(!gltf)throw last||new Error('GLB inaccessible');
+ model=gltf.scene;
+ model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;if(o.morphTargetDictionary)morphMeshes.push(o)}});
+ hero.add(model);normalize();upgradeMaterials();
+ let names=new Set();for(const m of morphMeshes)Object.keys(m.morphTargetDictionary||{}).forEach(n=>names.add(n));
+ document.getElementById('count').textContent=names.size;
+ document.getElementById('meshBadge').textContent=names.size+' MORPHS RÉELS';
+ setMorph('bodyMasculine',.7);setMorph('bodyFeminine',0);
+ document.getElementById('statusText').textContent='Humain paramétrique chargé';
+ setTimeout(()=>document.getElementById('status').classList.add('hidden'),500);
+}
+document.getElementById('reset').onclick=()=>{
+ document.querySelectorAll('input[type=range]').forEach(x=>{x.value=0;x.dispatchEvent(new Event('input'))});
+ setMorph('bodyMasculine',.7);document.querySelectorAll('.sw').forEach((x,i)=>x.classList.toggle('active',i===1));applySkin('#d1a078');
+};
+document.getElementById('save').onclick=()=>{
+ const morphs={};for(const m of morphMeshes)for(const [n,i] of Object.entries(m.morphTargetDictionary||{})){const v=m.morphTargetInfluences?.[i]||0;if(v>.001)morphs[n]=v}
+ const appearance={race:'humain',skin:document.querySelector('.sw.active')?.dataset.color||'#d1a078',morphs};
+ localStorage.setItem('everwild_human_parametric_v2',JSON.stringify(appearance));
+ const b=document.getElementById('save'),old=b.textContent;b.textContent='HUMAIN 3D ENREGISTRÉ';setTimeout(()=>b.textContent=old,1200);
+};
+function resize(){const w=root.clientWidth,h=root.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+window.addEventListener('resize',resize);resize();
+function loop(){requestAnimationFrame(loop);controls.update();renderer.render(scene,camera)}loop();
+loadReal().catch(e=>{console.error(e);document.querySelector('.spin').classList.add('hidden');document.getElementById('statusText').innerHTML='Le modèle réaliste n’a pas pu être chargé.<br>Recharge la page avec une connexion Internet.';document.getElementById('meshBadge').textContent='ERREUR MODÈLE'});
+</script>
+</body>
+</html>
