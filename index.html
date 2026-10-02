@@ -919,6 +919,28 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
   filter:saturate(1.06) contrast(1.04) brightness(1.08)!important;
 }
 
+
+/* ===== PLAYABLE CHARACTER PREVIEW V12 ===== */
+#screen-create .char-preview-canvas,
+#screen-existing .char-preview-canvas{
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  image-rendering:auto;
+}
+#screen-create .preview-stage,
+#screen-existing .existing-stage{
+  background:
+    radial-gradient(circle at 50% 34%,color-mix(in srgb,var(--raceAccent,#b59155) 20%,transparent),transparent 36%),
+    linear-gradient(145deg,#17241c 0%,#0a110d 68%,#050806 100%)!important;
+}
+#screen-create .live-preview-label:after{content:" • PERSONNAGE JOUABLE";font-size:8px;opacity:.65}
+.real-race-portrait{display:none!important}
+.race-thumb{display:block!important}
 </style>
 </head>
 <body>
@@ -956,7 +978,7 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
         <div class="preview-card menu-card">
           <div class="preview-stage">
             <div class="live-preview-label"><span></span> APERÇU EN DIRECT <span></span></div>
-            <div id="charPortrait" class="real-race-portrait race-pos-humain" aria-label="Aperçu réaliste du personnage"></div>
+            <canvas id="charPreviewCanvas" class="char-preview-canvas" width="420" height="520" aria-label="Aperçu en direct du personnage jouable"></canvas>
             <div class="preview-name"><b id="previewName">Nouveau survivant</b><span id="previewRace">Humain • Homme</span><div id="raceLore" class="race-lore">Équilibré et adaptable, prêt à survivre partout.</div></div>
           </div>
         </div>
@@ -983,7 +1005,7 @@ clip-path:polygon(15% 100%,17% 52%,23% 45%,31% 45%,34% 27%,39% 18%,44% 27%,47% 4
       <div class="menu-top"><div><h2>Ton personnage</h2><p id="existingServer"></p></div><button class="small-btn" data-back="servers">RETOUR</button></div>
       <div class="existing-hero">
         <div id="existingStage" class="existing-stage">
-          <div id="existingPortrait" class="real-race-portrait race-pos-humain existing-real-portrait" aria-label="Personnage réaliste du serveur"></div>
+          <canvas id="existingPreviewCanvas" class="char-preview-canvas existing-preview-canvas" width="420" height="520" aria-label="Personnage jouable enregistré sur ce serveur"></canvas>
         </div>
         <div>
           <h2 id="existingName" style="margin:0 0 8px"></h2>
@@ -1106,17 +1128,52 @@ function drawWolf(e){
   ctx.strokeStyle='#5d5145';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-17,0);ctx.quadraticCurveTo(-28,-12,-31,-4+step*2);ctx.stroke();ctx.restore();
 }
 function drawPlayer(){
+  const a=window.everwildAvatar||{raceId:'humain',sex:'Homme',skin:'#d2a176',eyes:'#6ea8a6',hairColor:'#3a2b24',hairStyle:'Courts',accent:'#a47e49'};
+  const race=a.raceId||'humain',female=a.sex==='Femme';
   const moving=player.moving,ph=player.walk,bob=moving?Math.abs(Math.sin(ph))*1.8:Math.sin(performance.now()*.003)*.4;
   const swing=moving?Math.sin(ph)*5:0,arm=moving?Math.sin(ph+Math.PI)*4:0,atk=player.attackT>0?Math.sin((.32-player.attackT)/.32*Math.PI)*13:0;
-  ctx.save();ctx.translate(player.x,player.y+bob);ctx.rotate(player.dir);
-  ctx.fillStyle='#1117113d';ctx.beginPath();ctx.ellipse(-3,13,17,7,0,0,TAU);ctx.fill();
-  ctx.lineCap='round';
-  ctx.strokeStyle='#3c3028';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(-8,-4);ctx.lineTo(-15+swing,7);ctx.moveTo(-7,5);ctx.lineTo(-15-swing,15);ctx.stroke();
-  ctx.strokeStyle='#c59b72';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-1,-8);ctx.lineTo(7, -10+arm);ctx.moveTo(-1,8);ctx.lineTo(8,-7-arm-atk);ctx.stroke();
-  const bg=ctx.createLinearGradient(-9,-11,9,11);bg.addColorStop(0,'#536d68');bg.addColorStop(1,'#2f4646');ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(-11,-9,20,18,6);ctx.fill();
-  ctx.fillStyle='#8b694b';ctx.fillRect(-8,7,15,3);
-  const skin=ctx.createRadialGradient(10,-2,2,10,-2,8);skin.addColorStop(0,'#ead0a6');skin.addColorStop(1,'#c69b70');ctx.fillStyle=skin;ctx.beginPath();ctx.arc(10,-2,7.5,0,TAU);ctx.fill();
-  ctx.fillStyle='#3b2f28';ctx.beginPath();ctx.arc(9,-5,6.2,Math.PI,TAU);ctx.fill();
+  const raceSkin={humain:a.skin,elfe:a.skin,orc:'#6f8058',nain:a.skin,draconien:'#9d4d3a',wildren:'#6d684e',wharn:'#a8c9d2',bornak:'#8d6747'}[race]||a.skin;
+  const body={humain:'#4e6760',elfe:'#4f6650',orc:'#4d5039',nain:'#63503a',draconien:'#4d2d29',wildren:'#3f5035',wharn:'#445b63',bornak:'#574438'}[race]||'#4e6760';
+  const body2={humain:'#293e3b',elfe:'#314536',orc:'#303326',nain:'#3e3128',draconien:'#2c1c1b',wildren:'#263323',wharn:'#293a40',bornak:'#332820'}[race]||'#293e3b';
+  const scale=race==='nain'?.90:(race==='orc'||race==='bornak'?1.12:1);
+  const headR=race==='orc'||race==='bornak'?8.8:race==='nain'?8.3:7.5;
+  ctx.save();ctx.translate(player.x,player.y+bob);ctx.rotate(player.dir);ctx.scale(scale,scale);
+  ctx.fillStyle='#1117113d';ctx.beginPath();ctx.ellipse(-3,13,18,7,0,0,TAU);ctx.fill();
+
+  // Race silhouettes that are also visible in the creator.
+  if(race==='draconien'){ctx.strokeStyle='#6d2e28';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-6,4);ctx.quadraticCurveTo(-24,14,-25,25);ctx.stroke()}
+  if(race==='wildren'){ctx.strokeStyle='#69583a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(8,-9);ctx.lineTo(14,-18);ctx.moveTo(8,-10);ctx.lineTo(4,-19);ctx.moveTo(13,-16);ctx.lineTo(18,-20);ctx.stroke()}
+  if(race==='bornak'){ctx.fillStyle='#5b4a36';ctx.beginPath();ctx.moveTo(5,-9);ctx.lineTo(9,-18);ctx.lineTo(12,-8);ctx.fill()}
+  if(race==='elfe'){ctx.fillStyle=raceSkin;ctx.beginPath();ctx.moveTo(9,-8);ctx.lineTo(17,-11);ctx.lineTo(11,-2);ctx.fill();ctx.beginPath();ctx.moveTo(9,4);ctx.lineTo(17,7);ctx.lineTo(11,0);ctx.fill()}
+  if(race==='draconien'){ctx.fillStyle='#6f3027';ctx.beginPath();ctx.moveTo(8,-7);ctx.lineTo(13,-17);ctx.lineTo(15,-5);ctx.fill();ctx.beginPath();ctx.moveTo(8,3);ctx.lineTo(14,11);ctx.lineTo(14,0);ctx.fill()}
+  if(race==='orc'){ctx.fillStyle='#e8d5b0';ctx.beginPath();ctx.moveTo(14,1);ctx.lineTo(20,4);ctx.lineTo(14,5);ctx.fill();ctx.beginPath();ctx.moveTo(14,-5);ctx.lineTo(20,-8);ctx.lineTo(14,-7);ctx.fill()}
+
+  // Legs
+  ctx.strokeStyle='#382e27';ctx.lineWidth=race==='orc'||race==='bornak'?7:6;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(-8,-4);ctx.lineTo(-15+swing,7);ctx.moveTo(-7,5);ctx.lineTo(-15-swing,15);ctx.stroke();
+
+  // Arms use the chosen skin/race colour.
+  ctx.strokeStyle=raceSkin;ctx.lineWidth=race==='orc'||race==='bornak'?6:5;
+  ctx.beginPath();ctx.moveTo(-1,-8);ctx.lineTo(7,-10+arm);ctx.moveTo(-1,8);ctx.lineTo(8,-7-arm-atk);ctx.stroke();
+
+  // Torso keeps the same racial visual language as the creator.
+  const bg=ctx.createLinearGradient(-10,-12,10,12);bg.addColorStop(0,body);bg.addColorStop(1,body2);
+  ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(-12,-10,race==='orc'||race==='bornak'?23:20,female?17:19,6);ctx.fill();
+  ctx.strokeStyle=a.accent||'#9d7f50';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(-8,-7);ctx.lineTo(6,7);ctx.stroke();
+
+  // Head + selected hair + selected eye colour.
+  const skin=ctx.createRadialGradient(10,-2,2,10,-2,headR);skin.addColorStop(0,raceSkin);skin.addColorStop(1,raceSkin);
+  ctx.fillStyle=skin;ctx.beginPath();ctx.arc(10,-2,headR,0,TAU);ctx.fill();
+  if(!['draconien','bornak'].includes(race) && a.hairStyle!=='Rasés'){
+    ctx.fillStyle=a.hairColor||'#3b2f28';
+    const hr=a.hairStyle==='Longs'?7.2:a.hairStyle==='Crête'?5.7:6.2;
+    ctx.beginPath();ctx.arc(9,-5,hr,Math.PI,TAU);ctx.fill();
+    if(a.hairStyle==='Crête'){ctx.fillRect(7,-13,4,7)}
+    if(a.hairStyle==='Tressés'){ctx.strokeStyle=a.hairColor;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(7,-7);ctx.lineTo(2,-14);ctx.stroke()}
+  }
+  ctx.fillStyle=a.eyes||'#6ea8a6';ctx.beginPath();ctx.arc(13,-4,1.2,0,TAU);ctx.fill();
+
+  // Current melee weapon/hand direction.
   ctx.strokeStyle='#8f6a45';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(7,-7-atk);ctx.lineTo(21,-8-atk);ctx.stroke();
   ctx.restore();
 }
@@ -1511,8 +1568,9 @@ function applyRacePortrait(el,id){
 }
 function updatePreview(){
  const r=race(FE.selectedRace),sex=document.getElementById('charSex').value,n=document.getElementById('charName').value.trim();
- applyRacePortrait(document.getElementById('charPortrait'),r.id);
  document.querySelector('.preview-stage').style.setProperty('--raceAccent',r.accent);
+ previewState.creator=currentCreatorPreview();
+ drawRaceCharacter(document.getElementById('charPreviewCanvas'),previewState.creator,performance.now());
  document.getElementById('previewRace').textContent=r.name+' • '+sex;
  document.getElementById('raceLore').textContent=r.lore;
  document.getElementById('previewName').textContent=n||'Nouveau survivant';
@@ -1520,8 +1578,9 @@ function updatePreview(){
 function renderExisting(c){
  const r=race(c.raceId);
  document.getElementById('existingServer').textContent=FE.selectedServer.name+' • '+FE.selectedServer.mode;
- const stage=document.getElementById('existingStage');stage.style.setProperty('--existing-accent',r.accent);
- applyRacePortrait(document.getElementById('existingPortrait'),r.id);
+ const stage=document.getElementById('existingStage');stage.style.setProperty('--existing-accent',r.accent);stage.style.setProperty('--raceAccent',r.accent);
+ previewState.existing={raceId:r.id,sex:c.sex||'Homme',skin:c.skin||r.skin,eyes:c.eyes||r.eyes,hairColor:c.hairColor||r.hair,hairStyle:c.hair||'Courts',accent:r.accent};
+ drawRaceCharacter(document.getElementById('existingPreviewCanvas'),previewState.existing,performance.now());
  document.getElementById('existingName').textContent=c.name;
  document.getElementById('existingRace').textContent=c.raceName+' • '+c.sex+' • '+c.hair;
  document.getElementById('existingLevel').textContent=c.level||1;
@@ -1549,6 +1608,15 @@ document.getElementById('deleteBtn').onclick=()=>{
  }
 };
 document.getElementById('joinBtn').onclick=()=>{
+ if(!FE.selectedServer)return;
+ const c=load(FE.selectedServer.id);
+ if(c){
+   const r=race(c.raceId);
+   window.everwildAvatar={
+     raceId:c.raceId,sex:c.sex||'Homme',skin:c.skin||r.skin,eyes:c.eyes||r.eyes,
+     hairColor:c.hairColor||r.hair,hairStyle:c.hair||'Courts',accent:r.accent,name:c.name
+   };
+ }
  document.body.classList.add('game-started');
 };
 renderRaces();
