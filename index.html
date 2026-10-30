@@ -1627,4 +1627,24 @@ updatePreview();
 })();
 </script>
 
+<style>
+#returnToMenu{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:35;border:1px solid #d5b87977;border-radius:24px;background:#142018e8;color:#f4e8ca;padding:9px 15px;font-size:11px;letter-spacing:.6px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px #0007}
+body:not(.game-started) #returnToMenu{display:none}
+body.game-started #frontEnd{pointer-events:none;visibility:hidden}
+@media(max-width:600px){#returnToMenu{bottom:max(8px,env(safe-area-inset-bottom));padding:7px 12px;font-size:10px}}
+</style>
+<button id="returnToMenu" type="button" aria-label="Revenir au menu principal">☰ MENU</button>
+<script>
+document.getElementById('returnToMenu').addEventListener('click',()=>{
+ document.body.classList.remove('game-started');
+ const front=document.getElementById('frontEnd');
+ front.style.visibility='visible';front.style.pointerEvents='auto';
+ document.querySelectorAll('.menu-screen').forEach(el=>el.classList.toggle('active',el.id==='screen-main'));
+});
+const everwildStartWatch=new MutationObserver(()=>{
+ const started=document.body.classList.contains('game-started');
+ if(started){const front=document.getElementById('frontEnd');front.style.visibility='hidden';front.style.pointerEvents='none';}
+});
+everwildStartWatch.observe(document.body,{attributes:true,attributeFilter:['class']});
+</script>
 </body></html>
